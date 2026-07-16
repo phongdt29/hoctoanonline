@@ -26,7 +26,7 @@
             <nav class="nav nav-pills flex-column gap-1 text-center" style="width:92px" aria-label="Điều hướng chính">
                 @foreach ($nav as $item)
                     <a class="nav-link ht-tap px-1 py-2 {{ ($active ?? '') === $item['route'] ? 'active' : '' }}"
-                       href="#"
+                       href="{{ route($item['route']) }}"
                        @if (($active ?? '') === $item['route']) aria-current="page" @endif>
                         <i class="bi {{ $item['icon'] }} d-block fs-5 mb-1" aria-hidden="true"></i>
                         <span style="font-size:11px">{{ $item['label'] }}</span>
@@ -58,7 +58,7 @@
     <div class="container-fluid justify-content-around">
         @foreach ($nav as $item)
             <a class="nav-link ht-tap text-center px-2 {{ ($active ?? '') === $item['route'] ? 'text-primary fw-semibold' : 'text-secondary' }}"
-               href="#"
+               href="{{ route($item['route']) }}"
                @if (($active ?? '') === $item['route']) aria-current="page" @endif>
                 <i class="bi {{ $item['icon'] }} d-block fs-5" aria-hidden="true"></i>
                 <span style="font-size:10px">{{ $item['label'] }}</span>

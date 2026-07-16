@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ActivityController;
+use App\Http\Controllers\Api\AdminAnalyticsController;
 use App\Http\Controllers\Api\AdminProviderController;
 use App\Http\Controllers\Api\AssessmentController;
 use App\Http\Controllers\Api\DashboardController;
@@ -87,6 +88,9 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
     // Ticket T3 — admin: CRUD AI provider
     Route::middleware('role:admin,staff')->group(function () {
+        // Ticket R4 — analytics tong quan
+        Route::get('/admin/analytics', [AdminAnalyticsController::class, 'overview'])->name('api.admin.analytics');
+
         Route::get('/admin/ai-providers', [AdminProviderController::class, 'index'])->name('api.admin.providers.index');
         Route::post('/admin/ai-providers', [AdminProviderController::class, 'store'])->name('api.admin.providers.store');
         Route::put('/admin/ai-providers/{provider}', [AdminProviderController::class, 'update'])->name('api.admin.providers.update');

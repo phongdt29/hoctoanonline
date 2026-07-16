@@ -52,6 +52,14 @@ class UserSeeder extends Seeder
             'role'     => User::ROLE_ADMIN,
         ]);
 
+        // Tai khoan admin theo yeu cau (dang nhap that).
+        User::create([
+            'name'     => 'Admin',
+            'email'    => 'admin@gmail.com',
+            'password' => 'admin@',
+            'role'     => User::ROLE_ADMIN,
+        ]);
+
         foreach ([1, 2] as $i) {
             User::create([
                 'name'     => "Giao vien {$i}",

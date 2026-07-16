@@ -37,7 +37,7 @@ it('tu choi sai mat khau', function () {
 });
 
 it('seed dung so luong tung vai tro', function () {
-    expect(User::where('role', User::ROLE_ADMIN)->count())->toBe(1)
+    expect(User::where('role', User::ROLE_ADMIN)->count())->toBe(2)   // admin@hoctoan.test + admin@gmail.com
         ->and(User::where('role', User::ROLE_TEACHER)->count())->toBe(2)
         ->and(User::where('role', User::ROLE_STUDENT)->count())->toBe(10)
         ->and(User::where('role', User::ROLE_PARENT)->count())->toBe(5);

@@ -15,6 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Sanctum stateful: cho phep session cookie first-party xac thuc voi auth:sanctum.
+        // KHONG co dong nay thi moi call /api/v1/* tu trinh duyet (session) bi 401 —
+        // frontend Blade+jQuery goi API bang session, khong phai Bearer token.
+        $middleware->statefulApi();
+
         // Ticket A3 — RBAC
         $middleware->alias([
             'role' => EnsureRole::class,

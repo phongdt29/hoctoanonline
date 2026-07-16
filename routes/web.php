@@ -88,6 +88,11 @@ Route::middleware(['auth', 'role:student'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
         Route::get('/curriculum', [CurriculumPageController::class, 'show'])->name('curriculum');
         Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
+
+        // Trang phu: giai bai, gia su, ca nhan (host UI + JS goi API)
+        Route::get('/solver', [\App\Http\Controllers\Student\StudentPageController::class, 'solver'])->name('solver');
+        Route::get('/tutor', [\App\Http\Controllers\Student\StudentPageController::class, 'tutor'])->name('tutor');
+        Route::get('/profile', [\App\Http\Controllers\Student\StudentPageController::class, 'profile'])->name('profile');
     });
 });
 

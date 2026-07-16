@@ -40,15 +40,19 @@ class AssessmentPageController extends Controller
 
         abort_unless($assessment->student_id === $student?->id, 403);
 
-        // Chua cham xong (chuoi job dang chay) -> hien trang "dang xu ly".
-        if ($assessment->status !== Assessment::STATUS_GRADED) {
+        $assessment->load('questions', 'classification.topicAbilities');
+
+        // Chuoi job chay qua queue: submit -> graded -> classified -> curriculum.
+        // Trang ket qua CAN classification (final_level, topic_abilities). Neu chua co
+        // (job Classify chua chay xong) -> hien "dang xu ly", KHONG render voi null.
+        // Truoc day chi check status='graded' -> co cua so graded-nhung-chua-classified
+        // gay loi "final_level on null".
+        if ($assessment->status !== Assessment::STATUS_GRADED || $assessment->classification === null) {
             return view('student.assessment-processing', [
                 'assessment' => $assessment,
                 'themeColor' => $student->favorite_color,
             ]);
         }
-
-        $assessment->load('questions', 'classification.topicAbilities');
 
         return view('student.assessment-result', [
             'assessment' => $assessment,

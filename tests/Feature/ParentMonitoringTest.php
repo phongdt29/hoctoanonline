@@ -75,7 +75,7 @@ it('M3: SendParentNotificationJob gui toi tat ca phu huynh da link', function ()
         'type' => 'absent',
         'title' => 'Test',
         'content' => 'Test content',
-    ])->handle();
+    ])->handle(app(\App\Services\Notification\NotificationDispatcher::class));
 
     // student1 -> parent1 (1 phu huynh link).
     expect(ParentNotification::where('student_id', $student->id)->where('title', 'Test')->count())
