@@ -95,6 +95,13 @@ return [
     'ai_timeout' => 60,
 
     /*
+    | Safety filter co ban cho noi dung AI (hoc sinh 6-12) — SPEC §3.8.
+    | Lop chan THO; provider that thuong co safety rieng manh hon.
+    | De rong o dev; production bo sung tu ngu nhay cam qua bien moi truong/DB.
+    */
+    'ai_blocklist' => [],
+
+    /*
     | Cảnh báo phụ huynh (SPEC §3.7) — các ngưỡng còn lại của bảng trigger.
     | Tách riêng để không hardcode trong AttendanceService/RiskScoreService.
     */
