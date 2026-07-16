@@ -29,6 +29,9 @@ class SchoolClass extends Model
     {
         return [
             'grade' => 'integer',
+            // Cast teacher_id -> int: foreign key khong tu cast, se ve string "2"
+            // lam so sanh strict `=== $user->id` (int) sai -> Policy tu choi nham.
+            'teacher_id' => 'integer',
         ];
     }
 

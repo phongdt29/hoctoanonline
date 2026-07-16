@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Student\AssessmentPageController;
 use App\Http\Controllers\Student\CurriculumPageController;
+use App\Http\Controllers\Student\DashboardController;
 use App\Http\Controllers\Student\LessonController;
 use App\Http\Controllers\Student\OnboardingController;
 use App\Models\Student;
@@ -15,6 +16,9 @@ Route::get('/', function () {
         ? redirect()->to(\App\Support\RoleRedirect::for(auth()->user()))
         : view('welcome');
 })->name('home');
+
+// Ticket P3 — health check cho monitoring (DB + queue). Cong khai (khong auth).
+Route::get('/healthz', \App\Http\Controllers\HealthController::class)->name('healthz');
 
 /*
 |--------------------------------------------------------------------------
@@ -66,9 +70,7 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     // `assessed`: chan vao khi chua lam bai danh gia — giao trinh sinh tu ket qua
     // phan loai, chua co thi khong co gi de hien.
     Route::middleware('assessed')->group(function () {
-        Route::view('/dashboard', 'stub', ['title' => 'Trang chính học sinh', 'ticket' => 'L4'])
-            ->name('dashboard');
-
+        Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
         Route::get('/curriculum', [CurriculumPageController::class, 'show'])->name('curriculum');
         Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
     });
@@ -76,8 +78,10 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 
 // Phu huynh
 Route::middleware(['auth', 'role:parent'])->group(function () {
-    Route::view('/parent', 'stub', ['title' => 'Theo dõi con', 'ticket' => 'M4'])
+    Route::get('/parent', [\App\Http\Controllers\ParentPortal\DashboardController::class, 'show'])
         ->name('parent.dashboard');
+    Route::post('/parent/link-student', [\App\Http\Controllers\ParentPortal\DashboardController::class, 'linkStudent'])
+        ->name('parent.link-student');
 });
 
 // Giao vien

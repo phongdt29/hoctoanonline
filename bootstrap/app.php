@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureRole;
 use App\Http\Middleware\EnsureStudentAssessed;
+use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -22,6 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Chua dang nhap -> ve trang login (khong phai route 'login' mac dinh cua Laravel)
         $middleware->redirectGuestsTo(fn () => route('login'));
+
+        // Ticket P4 — security headers cho moi web response.
+        $middleware->web(append: [SecurityHeaders::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

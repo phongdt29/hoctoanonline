@@ -22,20 +22,23 @@ class AiProviderSeeder extends Seeder
         $key = env('GEMINI_API_KEY', 'AIza-DEV-FAKE-KEY-thay-bang-key-that');
         $base = 'https://generativelanguage.googleapis.com/v1beta';
 
+        // Dung ALIAS *-latest thay vi ban co dinh (gemini-1.5-flash da bi Google go,
+        // gemini-2.5-flash "khong con cho user moi"). Alias luon tro toi model hien
+        // hanh -> khong phai sua seed moi khi Google doi version.
         AiProvider::create([
             'name' => 'Gemini Flash (chinh)',
             'base_url' => $base,
             'api_key_encrypted' => Crypt::encrypt($key),
-            'models' => ['default' => 'gemini-1.5-flash', 'pro' => 'gemini-1.5-pro'],
+            'models' => ['default' => 'gemini-flash-latest', 'pro' => 'gemini-pro-latest'],
             'status' => AiProvider::STATUS_ACTIVE,
             'priority' => 1,
         ]);
 
         AiProvider::create([
-            'name' => 'Gemini Pro (du phong)',
+            'name' => 'Gemini Flash Lite (du phong)',
             'base_url' => $base,
             'api_key_encrypted' => Crypt::encrypt($key),
-            'models' => ['default' => 'gemini-1.5-pro'],
+            'models' => ['default' => 'gemini-flash-lite-latest'],
             'status' => AiProvider::STATUS_ACTIVE,
             'priority' => 2,   // dung khi provider 1 loi
         ]);
