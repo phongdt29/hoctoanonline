@@ -112,4 +112,31 @@ return [
         'review_ratio_mid_score'    => 30, // 5..<8 => bài mới + 30% ôn
     ],
 
+    /*
+    | Cá nhân hóa màu (UI-DESIGN-SPEC §5)
+    |
+    | "bảng 10 màu personalization định sẵn, không cho nhập hex tự do".
+    | UI spec KHÔNG liệt kê 10 màu cụ thể -> bảng dưới do implement chọn, cần design review.
+    |
+    | Ràng buộc: mỗi màu dùng làm --ht-primary (nền nút, chữ trắng đè lên) nên phải đạt
+    | contrast >= 4.5:1 với #FFF theo UI spec §5. Đã kiểm tra cả 10.
+    | `rgb` là bắt buộc: Bootstrap cần --bs-primary-rgb cho .text-primary / .bg-primary
+    | với opacity — thiếu nó thì đổi màu sẽ không lan hết (DoD F5).
+    */
+    'personalization' => [
+        'default_color' => '#5B4DFF',
+        'colors' => [
+            ['name' => 'Tím mực',    'hex' => '#5B4DFF', 'rgb' => '91,77,255'],
+            ['name' => 'Xanh dương', 'hex' => '#2563EB', 'rgb' => '37,99,235'],
+            ['name' => 'Xanh ngọc',  'hex' => '#0E7490', 'rgb' => '14,116,144'],
+            ['name' => 'Xanh lá',    'hex' => '#047857', 'rgb' => '4,120,87'],
+            ['name' => 'Xanh rêu',   'hex' => '#4D7C0F', 'rgb' => '77,124,15'],
+            ['name' => 'Xanh cổ vịt', 'hex' => '#0F766E', 'rgb' => '15,118,110'],
+            ['name' => 'Cam đất',    'hex' => '#C2410C', 'rgb' => '194,65,12'],
+            ['name' => 'Hổ phách',   'hex' => '#B45309', 'rgb' => '180,83,9'],
+            ['name' => 'Đỏ mận',     'hex' => '#BE123C', 'rgb' => '190,18,60'],
+            ['name' => 'Tím Huế',    'hex' => '#7C3AED', 'rgb' => '124,58,237'],
+        ],
+    ],
+
 ];

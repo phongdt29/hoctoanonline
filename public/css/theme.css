@@ -1,0 +1,266 @@
+/*!
+ * hoctoanonline — theme.css
+ * "Vở ô ly, mực tím — phiên bản hiện đại."
+ *
+ * Lop NHUOM Bootstrap 5.3 qua CSS variables. KHONG Sass, KHONG build.
+ * Nap SAU bootstrap.min.css.
+ *
+ * QUY TAC (UI-DESIGN-SPEC §2 + CLAUDE.md #8):
+ *  - Gioi han ~250 dong. Moi thu Bootstrap da co -> dung class goc, cam che lai.
+ *  - Khong tu che mau/hex moi ngoai token duoi.
+ *  - Doi --ht-primary MOT CHO -> nut/link/badge/progress phai doi theo (DoD F5).
+ */
+
+/* ============================================================
+   1. TOKEN GOC (prefix --ht- de khong dung --bs-)
+   ============================================================ */
+:root {
+    /* Blade override 2 bien nay theo students.favorite_color (bang 10 mau o
+       config/hoctoan.php). --ht-primary-rgb la BAT BUOC: thieu no thi
+       .text-primary / .bg-primary voi opacity se khong doi mau theo. */
+    --ht-primary: #5B4DFF;
+    --ht-primary-rgb: 91, 77, 255;
+
+    /* Dan xuat tu --ht-primary bang color-mix -> personalization lan het moi
+       trang thai (hover/active/soft). Neu hardcode, doi mau se khong lan sang hover. */
+    --ht-primary-ink: color-mix(in srgb, var(--ht-primary) 78%, #000);
+    --ht-primary-soft: color-mix(in srgb, var(--ht-primary) 12%, #fff);
+
+    --ht-bg: #F6F7FC;
+    --ht-ink: #1C2340;
+    --ht-ink-soft: #626C8A;
+    --ht-line: #E6E9F4;
+    --ht-star: #FFB020;
+
+    /* Trang thai — UI spec §3: luon la cham mau + CHU, khong bao gio mau tran */
+    --ht-ok: #12A150;
+    --ht-warn: #F5A524;
+    --ht-danger: #DC3545;
+
+    --font-num: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* ============================================================
+   2. MAP VAO BIEN BOOTSTRAP (cach chuan 5.3, khong can Sass)
+   ============================================================ */
+:root {
+    --bs-body-font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    --bs-body-bg: var(--ht-bg);
+    --bs-body-color: var(--ht-ink);
+    --bs-border-color: var(--ht-line);
+    --bs-primary: var(--ht-primary);
+    --bs-primary-rgb: var(--ht-primary-rgb);
+    --bs-link-color: var(--ht-primary);
+    --bs-link-color-rgb: var(--ht-primary-rgb);
+    --bs-link-hover-color: var(--ht-primary-ink);
+    --bs-border-radius: .75rem;
+    --bs-border-radius-lg: 1rem;
+    --bs-secondary-color: var(--ht-ink-soft);
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--ht-primary);
+    --bs-btn-border-color: var(--ht-primary);
+    --bs-btn-hover-bg: var(--ht-primary-ink);
+    --bs-btn-hover-border-color: var(--ht-primary-ink);
+    --bs-btn-active-bg: var(--ht-primary-ink);
+    --bs-btn-active-border-color: var(--ht-primary-ink);
+    --bs-btn-disabled-bg: var(--ht-primary);
+    --bs-btn-disabled-border-color: var(--ht-primary);
+    --bs-btn-focus-shadow-rgb: var(--ht-primary-rgb);
+    font-weight: 600;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--ht-primary);
+    --bs-btn-border-color: var(--ht-line);
+    --bs-btn-hover-bg: var(--ht-primary-soft);
+    --bs-btn-hover-color: var(--ht-primary-ink);
+    --bs-btn-hover-border-color: var(--ht-primary);
+    --bs-btn-active-bg: var(--ht-primary-soft);
+    --bs-btn-active-color: var(--ht-primary-ink);
+    --bs-btn-focus-shadow-rgb: var(--ht-primary-rgb);
+    font-weight: 600;
+}
+
+.card {
+    --bs-card-border-color: var(--ht-line);
+    --bs-card-border-radius: 1rem;
+    --bs-card-bg: #fff;
+    box-shadow: 0 1px 2px rgba(28, 35, 64, .05), 0 8px 24px rgba(28, 35, 64, .06);
+}
+
+.nav-pills {
+    --bs-nav-pills-link-active-bg: var(--ht-primary-soft);
+    --bs-nav-pills-link-active-color: var(--ht-primary);
+}
+
+.nav-pills .nav-link {
+    color: var(--ht-ink-soft);
+    font-weight: 600;
+}
+
+.progress {
+    --bs-progress-bar-bg: var(--ht-primary);
+    --bs-progress-height: .625rem;
+    --bs-progress-bg: var(--ht-primary-soft);
+    border-radius: 999px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--ht-primary);
+    box-shadow: 0 0 0 .25rem rgba(var(--ht-primary-rgb), .25);
+}
+
+.badge {
+    font-weight: 600;
+}
+
+/* ============================================================
+   3. CHAT RIENG (Bootstrap khong co)
+   ============================================================ */
+
+/* SIGNATURE 1: nen giay o ly. Dung --ht-primary-rgb de luoi doi mau theo hoc sinh. */
+body {
+    background-image:
+        linear-gradient(rgba(var(--ht-primary-rgb), .045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(var(--ht-primary-rgb), .045) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-attachment: fixed;
+}
+
+/* SIGNATURE 2: Mastery Grid — tien do kieu "to o vo" */
+.ht-mastery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15px, 1fr));
+    gap: 5px;
+}
+
+.ht-mastery .cell {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    border: 1.5px solid var(--ht-line);
+    background: #fff;
+    transition: transform .15s ease-out;
+}
+
+.ht-mastery .cell.done {
+    background: var(--ht-primary);
+    border-color: var(--ht-primary);
+}
+
+.ht-mastery .cell.now {
+    background: var(--ht-primary-soft);
+    border-color: var(--ht-primary);
+}
+
+.ht-mastery .cell:hover,
+.ht-mastery .cell:focus-visible {
+    transform: scale(1.25);
+}
+
+/* Khoanh khac signature: quiz >= 8 -> o to mau lan (ticket L5). Chi 1 lan, khong confetti. */
+@keyframes ht-fill {
+    from { transform: scale(0); }
+    to   { transform: scale(1); }
+}
+
+.ht-mastery .cell.just-done {
+    animation: ht-fill .4s ease-out;
+}
+
+/* So lieu (diem, %, timer) — UI spec §3 bat buoc class .num */
+.num {
+    font-family: var(--font-num);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Thanh mix 20/60/20 cua recommendation (SPEC §3.3) */
+.ht-mix {
+    display: flex;
+    height: 10px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--ht-line);
+}
+
+.ht-mix .m-review   { background: var(--ht-warn); }
+.ht-mix .m-new      { background: var(--ht-primary); }
+.ht-mix .m-fix      { background: var(--ht-ok); }
+
+/* Cham trang thai — luon di kem chu, khong bao gio mau tran */
+.badge .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    flex: none;
+}
+
+.dot-ok     { background: var(--ht-ok); }
+.dot-warn   { background: var(--ht-warn); }
+.dot-danger { background: var(--ht-danger); }
+
+/* Bong bong chat AI Tutor */
+.ht-bubble {
+    max-width: min(80%, 44rem);
+    padding: .625rem .875rem;
+    border-radius: 1rem;
+    line-height: 1.55;
+}
+
+.ht-bubble-student {
+    background: var(--ht-primary);
+    color: #fff;
+    border-bottom-right-radius: .25rem;
+}
+
+.ht-bubble-ai {
+    background: #fff;
+    border: 1px solid var(--ht-line);
+    border-bottom-left-radius: .25rem;
+}
+
+/* "dang soan..." — 3 cham nhun */
+.ht-typing span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 3px;
+    border-radius: 50%;
+    background: var(--ht-ink-soft);
+    animation: ht-bounce 1.2s infinite;
+}
+
+.ht-typing span:nth-child(2) { animation-delay: .15s; }
+.ht-typing span:nth-child(3) { animation-delay: .3s; }
+
+@keyframes ht-bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: .5; }
+    30%           { transform: translateY(-4px); opacity: 1; }
+}
+
+/* Card vao trang: fade + rise 8px, mot lan */
+@keyframes ht-rise {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+}
+
+.ht-rise { animation: ht-rise .3s ease-out both; }
+
+/* Vung cham >= 44px (UI spec §5) */
+.ht-tap { min-width: 44px; min-height: 44px; }
+
+/* Bottom tab mobile — chua noi dung khoi bi che */
+@media (max-width: 991.98px) {
+    body.has-bottom-nav { padding-bottom: 76px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+}
