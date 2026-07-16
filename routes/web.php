@@ -3,6 +3,9 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Student\AssessmentPageController;
+use App\Http\Controllers\Student\CurriculumPageController;
+use App\Http\Controllers\Student\LessonController;
 use App\Http\Controllers\Student\OnboardingController;
 use App\Models\Student;
 use Illuminate\Support\Facades\Route;
@@ -56,8 +59,9 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/onboarding', [OnboardingController::class, 'show'])->name('onboarding');
     Route::post('/onboarding', [OnboardingController::class, 'store'])->name('onboarding.store');
 
-    Route::view('/assessment', 'stub', ['title' => 'Kiểm tra đầu vào', 'ticket' => 'C3'])
-        ->name('assessment');
+    Route::get('/assessment', [AssessmentPageController::class, 'show'])->name('assessment');
+    Route::get('/assessment/{assessment}/result', [AssessmentPageController::class, 'result'])
+        ->name('assessment.result');
 
     // `assessed`: chan vao khi chua lam bai danh gia — giao trinh sinh tu ket qua
     // phan loai, chua co thi khong co gi de hien.
@@ -65,8 +69,8 @@ Route::middleware(['auth', 'role:student'])->group(function () {
         Route::view('/dashboard', 'stub', ['title' => 'Trang chính học sinh', 'ticket' => 'L4'])
             ->name('dashboard');
 
-        Route::view('/curriculum', 'stub', ['title' => 'Lộ trình học', 'ticket' => 'C6'])
-            ->name('curriculum');
+        Route::get('/curriculum', [CurriculumPageController::class, 'show'])->name('curriculum');
+        Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
     });
 });
 

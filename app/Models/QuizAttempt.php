@@ -24,18 +24,32 @@ class QuizAttempt extends Model
 
     protected $fillable = [
         'quiz_id', 'student_id', 'score', 'error_analysis',
-        'suggestion', 'started_at', 'expires_at', 'submitted_at',
+        'suggestion', 'started_at', 'expires_at', 'submitted_at', 'questions_snapshot',
     ];
 
     protected function casts(): array
     {
         return [
-            'error_analysis' => 'array',
-            'score'          => 'decimal:2',
-            'started_at'     => 'datetime',
-            'expires_at'     => 'datetime',
-            'submitted_at'   => 'datetime',
+            'error_analysis'     => 'array',
+            'questions_snapshot' => 'array',
+            'score'              => 'decimal:2',
+            'started_at'         => 'datetime',
+            'expires_at'         => 'datetime',
+            'submitted_at'       => 'datetime',
         ];
+    }
+
+    /** Snapshot cau hoi KHONG kem dap an dung — an toan de tra ve client. */
+    public function questionsForClient(): array
+    {
+        return collect($this->questions_snapshot ?? [])
+            ->map(fn ($q, $i) => [
+                'index' => $i,
+                'topic' => $q['topic'] ?? 'unknown',
+                'content' => $q['content'] ?? '',
+                'options' => $q['options'] ?? [],
+            ])
+            ->all();
     }
 
     public function quiz(): BelongsTo
