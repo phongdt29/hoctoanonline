@@ -1,6 +1,8 @@
 # PLAN CODE TOÀN TRÌNH — HOCTOANONLINE.COM
 ## Kế hoạch triển khai từ repo trống → production
-**Stack:** Laravel 11 + MySQL 8 + Blade + jQuery · VPS Ubuntu (LEMP) · Không build frontend
+**Stack:** Laravel 12 + MySQL 8 + Blade + jQuery · VPS Ubuntu (LEMP) · Không build frontend
+
+> ⚠️ **Laravel 11 → 12:** Laravel 11 hết hạn hỗ trợ bảo mật, Composer chặn cài. Đã dùng Laravel 12.64.0 (`php ^8.2`). Xem `CLAUDE.md`.
 
 > **Cách dùng:** Mỗi ticket bên dưới là **1 phiên làm việc với AI agent**. Mở Claude Code tại thư mục repo, dán prompt của ticket, kèm 2 file spec (`SPEC-AI-CODING-hoctoanonline-Laravel-v3.md`, `UI-DESIGN-SPEC-hoctoanonline.md`). Làm xong ticket → chạy DoD → commit → sang ticket kế. **Không nhảy cóc**, vì ticket sau phụ thuộc ticket trước.
 
@@ -33,10 +35,10 @@ S0 → S1 → S2 → S3 → ┬→ S4
 
 ## SPRINT 0 — NỀN MÓNG (2 ngày)
 
-### F1. Khởi tạo project + config nghiệp vụ
+### F1. Khởi tạo project + config nghiệp vụ ✅ XONG
 **Làm:**
-- `composer create-project laravel/laravel hoctoan` (Laravel 11, PHP 8.3)
-- `php artisan install:api` (Sanctum) · cài `predis/predis`
+- `composer create-project laravel/laravel:^12.0 .` — dựng **tại repo root** (không phải thư mục con `hoctoan/`), để git root trùng Laravel root đúng như deploy script §P2 giả định
+- `php artisan install:api` (Sanctum) · cài `predis/predis` (client cho production; local không cần Redis server)
 - Tạo `config/hoctoan.php` chứa **toàn bộ ngưỡng nghiệp vụ** (cấm hardcode về sau):
 ```php
 return [

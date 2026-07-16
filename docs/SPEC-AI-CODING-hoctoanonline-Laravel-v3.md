@@ -2,16 +2,18 @@
 ## v3.0 — PHP LARAVEL + MySQL + jQuery (Tài liệu cho AI Coding Agent)
 
 > **Cách dùng:** Đưa file này cho AI coding agent làm nguồn sự thật duy nhất.
-> Stack chốt: **Laravel 11 + MySQL 8 + Blade + jQuery (JS thuần, không build frontend)**.
+> Stack chốt: **Laravel 12 + MySQL 8 + Blade + jQuery (JS thuần, không build frontend)**.
 > Deploy: VPS Ubuntu (Nginx + PHP-FPM + MySQL + Redis + Supervisor).
+>
+> ⚠️ **v3.1 — Laravel 11 → 12:** Laravel 11 đã hết hạn hỗ trợ bảo mật, Composer chặn cài (mọi bản v11.x dính advisory chưa vá). Laravel 12 (`php ^8.2`) là bản an toàn gần spec gốc nhất. Laravel 13 đòi `php ^8.3`. Mọi nội dung khác của spec giữ nguyên.
 
 ---
 
 ## 0. TECH STACK & CONVENTIONS (BẮT BUỘC)
 
 ```yaml
-framework: Laravel 11 (PHP 8.3)
-database: MySQL 8 — charset utf8mb4, collation utf8mb4_unicode_ci
+framework: Laravel 12 (PHP >= 8.2; production 8.3, local dev XAMPP 8.2)
+database: MySQL 8 (production) / MariaDB 10.4 (local XAMPP) — utf8mb4, utf8mb4_unicode_ci
 orm: Eloquent + Laravel Migration/Seeder (KHÔNG viết SQL tay trên production)
 frontend: Blade template + jQuery 3.x + Bootstrap 5 (CDN — KHÔNG dùng Vite/webpack)
 auth_web: session-based (Laravel Breeze pattern, tự viết controller)
