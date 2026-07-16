@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ActivityController;
 use App\Http\Controllers\Api\AdminProviderController;
 use App\Http\Controllers\Api\AssessmentController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\GamificationController;
 use App\Http\Controllers\Api\QuizController;
 use App\Http\Controllers\Api\SolverController;
 use App\Http\Controllers\Api\StudentAssignmentController;
@@ -52,6 +53,11 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
         // Ticket I2 — Solver text (3 buoc chong le thuoc dap an)
         Route::post('/solver/text', [SolverController::class, 'text'])->name('api.solver.text');
+
+        // Ticket I3 — Solver anh (OCR). throttle 20/ngay o service; them throttle route chong spam.
+        Route::post('/solver/image', [SolverController::class, 'image'])
+            ->middleware('throttle:30,1')->name('api.solver.image');
+        Route::post('/solver/{solverRequest}/confirm-image', [SolverController::class, 'confirmImage'])->name('api.solver.confirm-image');
         Route::post('/solver/{solverRequest}/more-hint', [SolverController::class, 'moreHint'])->name('api.solver.more-hint');
         Route::post('/solver/{solverRequest}/full-solution', [SolverController::class, 'fullSolution'])->name('api.solver.full-solution');
         Route::get('/solver/{solverRequest}/similar', [SolverController::class, 'similar'])->name('api.solver.similar');
@@ -63,6 +69,10 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
         // Ticket M1 — activity tracking (batch)
         Route::post('/activity/events', [ActivityController::class, 'store'])->name('api.activity.events');
+
+        // Ticket R2 — gamification
+        Route::get('/gamification/badges', [GamificationController::class, 'badges'])->name('api.gamification.badges');
+        Route::get('/gamification/leaderboard', [GamificationController::class, 'leaderboard'])->name('api.gamification.leaderboard');
 
         // Ticket T2 — hoc sinh nhan & nop bai
         Route::get('/student/assignments', [StudentAssignmentController::class, 'index'])->name('api.student.assignments');

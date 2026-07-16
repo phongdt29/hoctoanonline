@@ -43,6 +43,7 @@ class QuizService
     public function __construct(
         private readonly AiProviderService $ai,
         private readonly PointLedgerService $points,
+        private readonly GamificationService $gamification,
     ) {}
 
     /** Bat dau: tra attempt dang mo neu con han, khong thi tao moi + sinh cau hoi. */
@@ -137,6 +138,10 @@ class QuizService
             if ($score >= config('hoctoan.quiz.new_lesson_min')) {
                 $this->unlockNextLesson($attempt->quiz);
             }
+
+            // Ticket R2 — cap nhat streak + trao huy hieu moi (idempotent).
+            $this->gamification->touchStreak($attempt->student);
+            $this->gamification->checkBadges($attempt->student->fresh());
 
             return $attempt->fresh();
         });

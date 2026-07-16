@@ -20,7 +20,99 @@ use App\Services\Ai\AiException;
  */
 class SolverService
 {
+    /** Schema OCR: trich de toan tu anh + do tin cay. */
+    public const OCR_SCHEMA = [
+        'type' => 'object',
+        'required' => ['problem_text', 'confidence'],
+        'properties' => [
+            'problem_text' => ['type' => 'string'],
+            'confidence' => ['type' => 'integer'],   // 0..100
+        ],
+    ];
+
     public function __construct(private readonly AiProviderService $ai) {}
+
+    /**
+     * Ticket I3 — nhan anh de toan, OCR qua Gemini vision.
+     *
+     * Rate limit 20 anh/ngay/hoc sinh (config). Confidence thap -> BAT student confirm
+     * de da parse dung (khong giai ngay). Neu confirm OK moi cho hint nhu text.
+     *
+     * @param array $image ['data' => base64, 'mime' => 'image/png']
+     */
+    public function startImage(Student $student, array $image, string $imageUrl): array
+    {
+        $this->assertImageQuota($student);
+
+        $ocr = $this->ai->vision(
+            AiLog::FEATURE_SOLVER,
+            'Trích đề toán trong ảnh thành text chính xác. Trả JSON {problem_text, confidence 0-100}. '
+            .'confidence = mức độ chắc chắn đọc đúng đề.',
+            $image,
+            self::OCR_SCHEMA,
+            $student->id,
+        );
+
+        $confidence = max(0, min(100, (int) $ocr['confidence']));
+
+        $request = SolverRequest::create([
+            'student_id' => $student->id,
+            'input_type' => SolverRequest::INPUT_IMAGE,
+            'problem_text' => $ocr['problem_text'],
+            'image_url' => $imageUrl,
+            'ocr_confidence' => $confidence,
+            'hint_count' => 0,
+            'solution_revealed' => false,
+        ]);
+
+        // Confidence thap -> bat confirm, CHUA giai.
+        if ($request->needsOcrConfirmation()) {
+            return [
+                'request' => $request,
+                'needs_confirmation' => true,
+                'parsed_text' => $ocr['problem_text'],
+                'confidence' => $confidence,
+                'hint' => null,
+            ];
+        }
+
+        $hint = $this->generateHint($request, level: 1);
+
+        return [
+            'request' => $request->fresh(),
+            'needs_confirmation' => false,
+            'parsed_text' => $ocr['problem_text'],
+            'confidence' => $confidence,
+            'hint' => $hint,
+        ];
+    }
+
+    /** Sau khi student confirm de da parse dung (hoac sua lai) -> bat dau giai. */
+    public function confirmImage(SolverRequest $request, ?string $correctedText = null): array
+    {
+        if ($correctedText !== null && trim($correctedText) !== '') {
+            $request->update(['problem_text' => $correctedText]);
+        }
+
+        $hint = $this->generateHint($request->fresh(), level: 1);
+
+        return ['request' => $request->fresh(), 'hint' => $hint];
+    }
+
+    private function assertImageQuota(Student $student): void
+    {
+        $today = SolverRequest::where('student_id', $student->id)
+            ->where('input_type', SolverRequest::INPUT_IMAGE)
+            ->whereDate('created_at', today())
+            ->count();
+
+        if ($today >= config('hoctoan.solver.image_per_day')) {
+            throw new AiException(
+                'Bạn đã dùng hết lượt gửi ảnh hôm nay ('.config('hoctoan.solver.image_per_day').' ảnh/ngày). '
+                .'Thử lại vào ngày mai, hoặc gõ đề bằng chữ nhé.'
+            );
+        }
+    }
 
     /** Buoc 1: tao request + hint mo dau. KHONG lo dap an. */
     public function startText(Student $student, string $problem): array

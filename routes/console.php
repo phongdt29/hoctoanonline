@@ -2,6 +2,7 @@
 
 use App\Jobs\CloseAttendanceSessionJob;
 use App\Jobs\ComputeRiskScoreJob;
+use App\Jobs\SendWeeklyReportJob;
 use App\Models\Student;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -31,3 +32,10 @@ Schedule::call(function () {
 
 // Doi soat points_balance vs point_ledger — 20:00 UTC.
 Schedule::command('hoctoan:reconcile-points')->dailyAt('20:00');
+
+// Bao cao tuan phu huynh — 01:00 UTC thu 2 = 8h sang T2 VN (Ticket R1).
+Schedule::call(function () {
+    Student::whereHas('parents')
+        ->pluck('id')
+        ->each(fn ($id) => SendWeeklyReportJob::dispatch($id));
+})->weeklyOn(1, '01:00')->name('weekly-parent-report');

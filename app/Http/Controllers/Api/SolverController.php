@@ -39,6 +39,60 @@ class SolverController extends Controller
         ]);
     }
 
+    /** POST /api/v1/solver/image — nhan anh de toan, OCR qua Gemini vision (I3). */
+    public function image(Request $request): JsonResponse
+    {
+        $student = $this->student($request);
+
+        $request->validate([
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:5120'],   // 5MB
+        ]);
+
+        $file = $request->file('image');
+
+        // Luu storage (local dev / s3 prod qua FILESYSTEM_DISK).
+        $path = $file->store('solver-images');
+
+        $result = $this->solver->startImage($student, [
+            'data' => base64_encode(file_get_contents($file->getRealPath())),
+            'mime' => $file->getMimeType(),
+        ], $path);
+
+        return response()->json([
+            'data' => [
+                'request_id' => $result['request']->id,
+                'parsed_text' => $result['parsed_text'],
+                'confidence' => $result['confidence'],
+                'needs_confirmation' => $result['needs_confirmation'],
+                'hint' => $result['hint'],   // null neu can confirm truoc
+            ],
+            'message' => $result['needs_confirmation']
+                ? 'Ảnh hơi khó đọc. Xác nhận đề mình đọc được có đúng không nhé.'
+                : 'Gợi ý cho bạn đây.',
+        ]);
+    }
+
+    /** POST /api/v1/solver/{solverRequest}/confirm-image */
+    public function confirmImage(Request $request, SolverRequest $solverRequest): JsonResponse
+    {
+        $this->authorizeOwner($request, $solverRequest);
+
+        $data = $request->validate([
+            'corrected_text' => ['nullable', 'string', 'max:2000'],
+        ]);
+
+        $result = $this->solver->confirmImage($solverRequest, $data['corrected_text'] ?? null);
+
+        return response()->json([
+            'data' => [
+                'request_id' => $result['request']->id,
+                'problem_text' => $result['request']->problem_text,
+                'hint' => $result['hint'],
+            ],
+            'message' => 'Bắt đầu giải nhé.',
+        ]);
+    }
+
     /** POST /api/v1/solver/{solverRequest}/more-hint */
     public function moreHint(Request $request, SolverRequest $solverRequest): JsonResponse
     {

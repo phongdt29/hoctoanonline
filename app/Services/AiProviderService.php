@@ -36,20 +36,29 @@ class AiProviderService
      * @param  array       $schema   JSON Schema output bat buoc
      * @param  int|null    $studentId  de gan ai_logs.student_id
      */
-    public function chat(string $feature, string $prompt, array $schema, ?int $studentId = null): array
+    public function chat(string $feature, string $prompt, array $schema, ?int $studentId = null, ?array $image = null): array
     {
         if (($bad = $this->screenInput($prompt)) !== null) {
             $this->logFiltered($feature, $studentId, $prompt, $bad);
             throw new AiException("Noi dung dau vao bi safety filter chan: {$bad}");
         }
 
-        $result = $this->run($feature, $prompt, $schema, $studentId);
+        $result = $this->run($feature, $prompt, $schema, $studentId, $image);
 
         if ($result->json === null) {
             throw new AiException('AI khong tra ve JSON hop le sau khi retry.');
         }
 
         return $result->json;
+    }
+
+    /**
+     * Ticket I3 — OCR anh de toan qua Gemini vision. Tra JSON theo schema.
+     * @param array $image ['data' => base64, 'mime' => 'image/png']
+     */
+    public function vision(string $feature, string $prompt, array $image, array $schema, ?int $studentId = null): array
+    {
+        return $this->chat($feature, $prompt, $schema, $studentId, $image);
     }
 
     /** Goi AI tra text tu do (tutor chat, solver). Van log + safety filter. */
@@ -67,7 +76,7 @@ class AiProviderService
      * Vong lap failover: thu tung provider theo priority. Provider dau loi -> provider ke.
      * Het provider ma van loi -> AiException.
      */
-    private function run(string $feature, string $prompt, ?array $schema, ?int $studentId): AiResult
+    private function run(string $feature, string $prompt, ?array $schema, ?int $studentId, ?array $image = null): AiResult
     {
         $providers = AiProvider::usable()->get();
 
@@ -79,7 +88,7 @@ class AiProviderService
 
         foreach ($providers as $provider) {
             try {
-                return $this->callWithSchemaRetry($provider, $feature, $prompt, $schema, $studentId);
+                return $this->callWithSchemaRetry($provider, $feature, $prompt, $schema, $studentId, $image);
             } catch (Throwable $e) {
                 $lastError = $e;
                 Log::warning('AI provider that bai, thu provider ke', [
@@ -104,6 +113,7 @@ class AiProviderService
         string $prompt,
         ?array $schema,
         ?int $studentId,
+        ?array $image = null,
     ): AiResult {
         $attempts = $schema === null ? 1 : 2;   // co schema thi cho retry 1 lan
         $lastErrors = [];
@@ -114,7 +124,7 @@ class AiProviderService
             // Loi HTTP (timeout, 5xx, 4xx) van la 1 call da xay ra -> phai co ai_logs
             // (CLAUDE.md #3). Log status=error roi nem lai de run() failover provider ke.
             try {
-                $response = $this->client->generate($provider, $prompt, $schema);
+                $response = $this->client->generate($provider, $prompt, $schema, null, $image);
             } catch (Throwable $e) {
                 $latencyMs = (int) ((hrtime(true) - $startedAt) / 1e6);
                 $this->writeLog($feature, $provider->id, $studentId, $prompt, ['error' => $e->getMessage()], $latencyMs, AiLog::STATUS_ERROR);
