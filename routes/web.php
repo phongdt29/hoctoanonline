@@ -1,10 +1,90 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Models\Student;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return auth()->check()
+        ? redirect()->to(\App\Support\RoleRedirect::for(auth()->user()))
+        : view('welcome');
+})->name('home');
+
+/*
+|--------------------------------------------------------------------------
+| Auth — ticket A1 + A2
+|--------------------------------------------------------------------------
+| throttle:5,1 cho login (DoD A1: sai pass 5 lan -> 429) va cho forgot-password
+| (chan do email de tim tai khoan ton tai).
+*/
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisterController::class, 'show'])->name('register');
+    Route::post('/register', [RegisterController::class, 'store']);
+
+    Route::get('/login', [LoginController::class, 'show'])->name('login');
+    Route::post('/login', [LoginController::class, 'store'])->middleware('throttle:5,1');
+
+    // A2 — quen / dat lai mat khau
+    Route::get('/forgot-password', [ResetPasswordController::class, 'showRequestForm'])
+        ->name('password.request');
+    Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLink'])
+        ->middleware('throttle:5,1')
+        ->name('password.email');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
+        ->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])
+        ->middleware('throttle:5,1')
+        ->name('password.update');
+});
+
+Route::post('/logout', [LoginController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');
+
+/*
+|--------------------------------------------------------------------------
+| Dich redirect theo vai tro (ticket A1)
+|--------------------------------------------------------------------------
+| Hien la stub — moi trang se duoc thay o dung ticket ghi ben duoi.
+| Ton tai o day de DoD A1 "vao dung trang theo role" kiem chung duoc that.
+*/
+// Hoc sinh
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::view('/onboarding', 'stub', ['title' => 'Onboarding', 'ticket' => 'C2'])
+        ->name('onboarding');
+
+    Route::view('/assessment', 'stub', ['title' => 'Kiểm tra đầu vào', 'ticket' => 'C3'])
+        ->name('assessment');
+
+    // `assessed`: chan vao khi chua lam bai danh gia — giao trinh sinh tu ket qua
+    // phan loai, chua co thi khong co gi de hien.
+    Route::middleware('assessed')->group(function () {
+        Route::view('/dashboard', 'stub', ['title' => 'Trang chính học sinh', 'ticket' => 'L4'])
+            ->name('dashboard');
+
+        Route::view('/curriculum', 'stub', ['title' => 'Lộ trình học', 'ticket' => 'C6'])
+            ->name('curriculum');
+    });
+});
+
+// Phu huynh
+Route::middleware(['auth', 'role:parent'])->group(function () {
+    Route::view('/parent', 'stub', ['title' => 'Theo dõi con', 'ticket' => 'M4'])
+        ->name('parent.dashboard');
+});
+
+// Giao vien
+Route::middleware(['auth', 'role:teacher'])->group(function () {
+    Route::view('/teacher/classes', 'stub', ['title' => 'Lớp của tôi', 'ticket' => 'T1'])
+        ->name('teacher.classes');
+});
+
+// Admin + staff
+Route::middleware(['auth', 'role:admin,staff'])->group(function () {
+    Route::view('/admin', 'stub', ['title' => 'Quản trị', 'ticket' => 'T3'])
+        ->name('admin.home');
 });
 
 /*
@@ -25,9 +105,9 @@ if (app()->environment(['local', 'testing'])) {
         $lessons = $student?->activeCurriculum?->lessons ?? collect();
 
         return view('style-guide', [
-            'active'     => 'dashboard',
+            'active' => 'dashboard',
             'themeColor' => $student?->favorite_color,
-            'lessons'    => $lessons,
+            'lessons' => $lessons,
             'justDoneId' => $lessons->firstWhere('status', 'unlocked')?->id,
         ]);
     })->name('style-guide');
