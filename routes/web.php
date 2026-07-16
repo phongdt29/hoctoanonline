@@ -12,10 +12,13 @@ Route::get('/', function () {
 | Style guide (ticket F5)
 |--------------------------------------------------------------------------
 | Trang kiem tra design system. CHI local — UI-DESIGN-SPEC §6.5.
-| Dat trong dieu kien isLocal() de route KHONG TON TAI o production,
+| Dat trong dieu kien environment de route KHONG TON TAI o production,
 | thay vi chi an bang middleware.
+|
+| Phai co ca 'testing': phpunit.xml set APP_ENV=testing nen isLocal() = false,
+| route se khong dang ky va test se an 404.
 */
-if (app()->isLocal()) {
+if (app()->environment(['local', 'testing'])) {
     Route::get('/style-guide', function () {
         // Dung du lieu seed that (student1) de style guide phan anh dung thuc te.
         $student = Student::with('activeCurriculum')->first();
