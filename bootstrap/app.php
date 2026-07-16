@@ -26,6 +26,12 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Ticket P4 — security headers cho moi web response.
         $middleware->web(append: [SecurityHeaders::class]);
+
+        // Ticket R3 — IPN server-to-server (MOMO POST) khong co CSRF token.
+        // An toan vi da verify signature trong PaymentService.
+        $middleware->validateCsrfTokens(except: [
+            'payment/momo-ipn',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

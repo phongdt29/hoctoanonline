@@ -21,11 +21,12 @@ class GeminiClient
 {
     /**
      * @param  array|null  $schema  JSON Schema — neu co, ep Gemini tra JSON dung cau truc.
+     * @param  array|null  $image   ['data' => base64, 'mime' => 'image/png'] — Gemini vision (I3).
      * @return array{text: string, raw: array}
      */
-    public function generate(AiProvider $provider, string $prompt, ?array $schema, ?string $model = null): array
+    public function generate(AiProvider $provider, string $prompt, ?array $schema, ?string $model = null, ?array $image = null): array
     {
-        $model ??= $provider->models['default'] ?? 'gemini-1.5-flash';
+        $model ??= $provider->models['default'] ?? 'gemini-flash-latest';
 
         $generationConfig = ['temperature' => 0.4];
 
@@ -35,10 +36,17 @@ class GeminiClient
             $generationConfig['responseSchema'] = $this->toGeminiSchema($schema);
         }
 
+        $parts = [['text' => $prompt]];
+
+        // Gemini vision: dinh kem anh dang inline_data base64 (I3 — OCR de toan).
+        if ($image !== null) {
+            $parts[] = ['inline_data' => ['mime_type' => $image['mime'], 'data' => $image['data']]];
+        }
+
         $response = $this->http($provider)
             ->post("/models/{$model}:generateContent", [
                 'contents' => [
-                    ['role' => 'user', 'parts' => [['text' => $prompt]]],
+                    ['role' => 'user', 'parts' => $parts],
                 ],
                 'generationConfig' => $generationConfig,
             ]);

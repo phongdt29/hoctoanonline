@@ -21,6 +21,21 @@ Route::get('/', function () {
 Route::get('/healthz', \App\Http\Controllers\HealthController::class)->name('healthz');
 
 /*
+| Ticket R3 — thanh toan VNPAY
+| IPN (vnpay-ipn) la server-to-server: KHONG auth, bao ve bang verify signature.
+| return la nguoi dung quay ve sau khi thanh toan.
+*/
+Route::get('/payment/vnpay-ipn', [\App\Http\Controllers\PaymentController::class, 'vnpayIpn'])
+    ->name('payment.vnpay-ipn');
+Route::post('/payment/momo-ipn', [\App\Http\Controllers\PaymentController::class, 'momoIpn'])
+    ->name('payment.momo-ipn');
+Route::get('/payment/return', [\App\Http\Controllers\PaymentController::class, 'return'])
+    ->name('payment.return');
+Route::post('/payment/checkout/{plan}', [\App\Http\Controllers\PaymentController::class, 'checkout'])
+    ->middleware(['auth', 'role:student'])
+    ->name('payment.checkout');
+
+/*
 |--------------------------------------------------------------------------
 | Auth — ticket A1 + A2
 |--------------------------------------------------------------------------
