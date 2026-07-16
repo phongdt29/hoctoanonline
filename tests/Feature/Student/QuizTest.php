@@ -109,7 +109,7 @@ it('DoD L2: cham dung server-side, client khong the tu khai dap an', function ()
     ])->assertOk();
 
     // 3/5 = 6.0 diem. Server tu tinh, khong tin client.
-    expect($res->json('data.score'))->toBe(6.0);
+    expect((float) $res->json('data.score'))->toBe(6.0);
 });
 
 it('DoD L2: submit sau khi het gio -> khong tinh cau nao dung (server chot gio)', function () {
@@ -128,7 +128,7 @@ it('DoD L2: submit sau khi het gio -> khong tinh cau nao dung (server chot gio)'
     ])->assertOk();
 
     // Het gio -> khong cau nao duoc tinh -> 0 diem, du client gui dap an dung het.
-    expect($res->json('data.score'))->toBe(0.0)
+    expect((float) $res->json('data.score'))->toBe(0.0)
         ->and($res->json('data.error_analysis.expired'))->toBeTrue();
 });
 
