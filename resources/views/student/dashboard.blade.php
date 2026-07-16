@@ -11,6 +11,9 @@
     <span class="badge rounded-pill text-bg-light border">
         <i class="bi bi-star-fill" style="color:var(--ht-star)"></i> <span class="num">{{ $d['points_balance'] }}</span>
     </span>
+    <a href="{{ route('pricing') }}" class="btn btn-sm btn-primary ht-tap">
+        <i class="bi bi-gem"></i> Nâng cấp
+    </a>
 @endsection
 
 @section('content')

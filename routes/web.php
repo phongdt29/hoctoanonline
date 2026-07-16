@@ -31,6 +31,9 @@ Route::post('/payment/momo-ipn', [\App\Http\Controllers\PaymentController::class
     ->name('payment.momo-ipn');
 Route::get('/payment/return', [\App\Http\Controllers\PaymentController::class, 'return'])
     ->name('payment.return');
+Route::get('/pricing', [\App\Http\Controllers\PaymentController::class, 'pricing'])
+    ->middleware(['auth', 'role:student'])
+    ->name('pricing');
 Route::post('/payment/checkout/{plan}', [\App\Http\Controllers\PaymentController::class, 'checkout'])
     ->middleware(['auth', 'role:student'])
     ->name('payment.checkout');

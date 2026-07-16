@@ -29,6 +29,23 @@
         });
     }
 
+    // Load lich su cuoc tro chuyen gan nhat khi mo trang.
+    function loadHistory() {
+        return api.get('/api/v1/tutor/current').then(function (r) {
+            convId = r.data.conversation_id;
+            var msgs = r.data.messages || [];
+
+            if (msgs.length) {
+                $('#tt-messages').empty();   // bo loi chao cung, hien lich su that
+                msgs.forEach(function (m) {
+                    append(m.sender, m.content);
+                    if (m.id > lastId) lastId = m.id;
+                });
+            }
+            startPolling();
+        });
+    }
+
     function poll() {
         if (!convId || document.hidden) return;
         api.get('/api/v1/tutor/conversations/' + convId + '/messages?after_id=' + lastId)
@@ -64,4 +81,7 @@
                 });
         });
     });
+
+    // Mo trang -> load lich su chat gan nhat.
+    $(loadHistory);
 }(window.jQuery));

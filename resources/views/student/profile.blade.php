@@ -23,6 +23,17 @@
         </dl>
     </x-card>
 
+    {{-- Nang cap goi hoc --}}
+    <div class="card mb-4 border-primary">
+        <div class="card-body p-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+                <h2 class="h6 mb-1"><i class="bi bi-gem text-primary"></i> Nâng cấp gói học</h2>
+                <p class="text-secondary small mb-0">Mở khóa học không giới hạn, gia sư A.I, giải bài từ ảnh.</p>
+            </div>
+            <a href="{{ route('pricing') }}" class="btn btn-primary ht-tap">Xem các gói</a>
+        </div>
+    </div>
+
     {{-- Ma moi phu huynh --}}
     <x-card title="Mã mời phụ huynh" icon="bi-people" class="mb-4">
         <p class="text-secondary small mb-2">Đưa mã này cho bố mẹ để bố mẹ theo dõi việc học của bạn.</p>

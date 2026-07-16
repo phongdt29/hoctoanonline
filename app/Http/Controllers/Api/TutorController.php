@@ -13,6 +13,37 @@ class TutorController extends Controller
 {
     public function __construct(private readonly TutorService $tutor) {}
 
+    /**
+     * GET /api/v1/tutor/current — cuoc tro chuyen gan nhat + lich su.
+     * Get-or-create: chua co thi tao 1 cai moi. Dung khi mo trang de load lich su
+     * (truoc day moi lan mo trang lai tao conversation moi -> mat lich su).
+     */
+    public function current(Request $request): JsonResponse
+    {
+        $student = $this->student($request);
+
+        $conversation = $student->tutorConversations()->latest('updated_at')->first()
+            ?? $this->tutor->startConversation($student);
+
+        $messages = $conversation->messages()
+            ->orderBy('id')
+            ->get()
+            ->map(fn ($m) => [
+                'id' => $m->id,
+                'sender' => $m->sender,
+                'content' => $m->content,
+                'time' => $m->created_at->timezone('Asia/Ho_Chi_Minh')->format('H:i'),
+            ]);
+
+        return response()->json([
+            'data' => [
+                'conversation_id' => $conversation->id,
+                'messages' => $messages,
+            ],
+            'message' => 'OK',
+        ]);
+    }
+
     /** POST /api/v1/tutor/conversations */
     public function createConversation(Request $request): JsonResponse
     {

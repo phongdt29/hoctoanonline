@@ -64,6 +64,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         Route::get('/solver/{solverRequest}/similar', [SolverController::class, 'similar'])->name('api.solver.similar');
 
         // Ticket I1 — Tutor chat (polling)
+        Route::get('/tutor/current', [TutorController::class, 'current'])->name('api.tutor.current');
         Route::post('/tutor/conversations', [TutorController::class, 'createConversation'])->name('api.tutor.create');
         Route::post('/tutor/conversations/{conversation}/messages', [TutorController::class, 'sendMessage'])->name('api.tutor.send');
         Route::get('/tutor/conversations/{conversation}/messages', [TutorController::class, 'messages'])->name('api.tutor.messages');

@@ -13,6 +13,7 @@
         ['route' => 'curriculum', 'icon' => 'bi-map',          'label' => 'Lộ trình'],
         ['route' => 'solver',     'icon' => 'bi-calculator',   'label' => 'Giải bài'],
         ['route' => 'tutor',      'icon' => 'bi-chat-dots',    'label' => 'Gia sư'],
+        ['route' => 'pricing',    'icon' => 'bi-gem',          'label' => 'Mua gói'],
         ['route' => 'profile',    'icon' => 'bi-person',       'label' => 'Cá nhân'],
     ];
 @endphp

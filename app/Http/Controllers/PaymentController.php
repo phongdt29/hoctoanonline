@@ -15,6 +15,15 @@ class PaymentController extends Controller
 {
     public function __construct(private readonly PaymentService $payments) {}
 
+    /** GET /pricing — trang chon goi hoc. */
+    public function pricing(): View
+    {
+        return view('payment.pricing', [
+            'plans' => Plan::where('is_active', true)->orderBy('price')->get(),
+            'themeColor' => request()->user()?->student?->favorite_color,
+        ]);
+    }
+
     /** POST /payment/checkout/{plan} — tao giao dich + redirect sang cong (vnpay|momo). */
     public function checkout(Request $request, Plan $plan): RedirectResponse
     {
