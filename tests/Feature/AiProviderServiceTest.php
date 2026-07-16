@@ -57,16 +57,24 @@ it('DoD C1: provider 1 loi -> tu failover sang provider 2', function () use ($sc
 });
 
 it('DoD C1: moi call deu ghi ai_logs', function () use ($schema) {
+    // Tao student that vi ai_logs.student_id co FK sang students.
+    $user = \App\Models\User::create([
+        'name' => 'HS', 'email' => 'hs.ai@hoctoan.test', 'password' => 'password', 'role' => 'student',
+    ]);
+    $student = \App\Models\Student::create([
+        'user_id' => $user->id, 'full_name' => 'HS', 'status' => 'registered',
+    ]);
+
     Http::fake(['*' => Http::response(geminiOk('{"level":"kha","score":50}'))]);
 
     expect(AiLog::count())->toBe(0);
 
-    $this->service->chat(AiLog::FEATURE_GRADING, 'prompt', $schema, studentId: 1);
+    $this->service->chat(AiLog::FEATURE_GRADING, 'prompt', $schema, studentId: $student->id);
 
     $log = AiLog::first();
     expect($log)->not->toBeNull()
         ->and($log->feature)->toBe(AiLog::FEATURE_GRADING)
-        ->and($log->student_id)->toBe(1)
+        ->and($log->student_id)->toBe($student->id)
         ->and($log->status)->toBe(AiLog::STATUS_OK)
         ->and($log->latency_ms)->toBeGreaterThanOrEqual(0);
 });

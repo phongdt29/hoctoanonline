@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Student\OnboardingController;
 use App\Models\Student;
 use Illuminate\Support\Facades\Route;
 
@@ -52,8 +53,8 @@ Route::post('/logout', [LoginController::class, 'destroy'])
 */
 // Hoc sinh
 Route::middleware(['auth', 'role:student'])->group(function () {
-    Route::view('/onboarding', 'stub', ['title' => 'Onboarding', 'ticket' => 'C2'])
-        ->name('onboarding');
+    Route::get('/onboarding', [OnboardingController::class, 'show'])->name('onboarding');
+    Route::post('/onboarding', [OnboardingController::class, 'store'])->name('onboarding.store');
 
     Route::view('/assessment', 'stub', ['title' => 'Kiểm tra đầu vào', 'ticket' => 'C3'])
         ->name('assessment');

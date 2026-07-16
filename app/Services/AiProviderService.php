@@ -111,7 +111,15 @@ class AiProviderService
         for ($i = 1; $i <= $attempts; $i++) {
             $startedAt = hrtime(true);
 
-            $response = $this->client->generate($provider, $prompt, $schema);
+            // Loi HTTP (timeout, 5xx, 4xx) van la 1 call da xay ra -> phai co ai_logs
+            // (CLAUDE.md #3). Log status=error roi nem lai de run() failover provider ke.
+            try {
+                $response = $this->client->generate($provider, $prompt, $schema);
+            } catch (Throwable $e) {
+                $latencyMs = (int) ((hrtime(true) - $startedAt) / 1e6);
+                $this->writeLog($feature, $provider->id, $studentId, $prompt, ['error' => $e->getMessage()], $latencyMs, AiLog::STATUS_ERROR);
+                throw $e;
+            }
 
             $latencyMs = (int) ((hrtime(true) - $startedAt) / 1e6);
             $text = $response['text'];
