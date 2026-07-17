@@ -69,7 +69,7 @@
                                             </div>
                                         </div>
                                         @if ($lesson->isAccessible())
-                                            <a href="#" class="btn btn-sm btn-outline-primary ht-tap">Vào học</a>
+                                            <a href="{{ route('lessons.show', $lesson->id) }}" class="btn btn-sm btn-outline-primary ht-tap">Vào học</a>
                                         @endif
                                     </div>
                                 </div>

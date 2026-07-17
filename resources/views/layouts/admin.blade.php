@@ -6,7 +6,7 @@
 
 @section('body')
 <nav class="navbar navbar-expand bg-white border-bottom px-3">
-    <span class="navbar-brand fw-bold mb-0">hoctoanonline</span>
+    <x-brand size="sm" class="navbar-brand mb-0" />
 
     <div class="navbar-nav me-auto">
         @yield('nav')

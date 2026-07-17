@@ -156,7 +156,7 @@
                     </div>
                 @endforeach
             </div>
-            <div class="d-flex gap-4 small text-secondary mt-3 pt-2 border-top">
+            <div class="d-flex flex-wrap gap-3 gap-sm-4 small text-secondary mt-3 pt-2 border-top">
                 <span>Bài học hoàn thành: <b class="num">{{ $num($r['learning']['lessons_completed']) }}</b></span>
                 <span>Điểm quiz TB toàn hệ thống: <b class="num">{{ $r['learning']['avg_quiz_score'] ?? '—' }}</b></span>
             </div>

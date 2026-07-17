@@ -8,10 +8,7 @@
 <main class="container d-flex align-items-center justify-content-center min-vh-100 py-5">
     <div class="w-100 ht-rise" style="max-width:440px">
         <div class="text-center mb-4">
-            <a href="{{ route('home') }}" class="d-inline-flex align-items-center gap-2 text-decoration-none mb-3">
-                <span class="ht-ico ht-ico-grad" style="width:44px;height:44px;font-size:1.25rem"><i class="bi bi-calculator-fill"></i></span>
-                <span class="fw-bold fs-5" style="letter-spacing:-.02em; color:var(--ht-ink)">hoctoanonline</span>
-            </a>
+            <x-brand size="lg" class="mb-3" />
             <h1 class="h4 mb-1">@yield('heading', 'Chào mừng')</h1>
             <p class="text-secondary small mb-0">@yield('subheading')</p>
         </div>

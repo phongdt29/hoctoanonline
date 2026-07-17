@@ -60,6 +60,9 @@
     --bs-heading-color: var(--ht-ink);
 }
 
+/* Ngua tran ngang tren mobile (glow/gradient trang tri co the vuot viewport) */
+html, body { overflow-x: hidden; max-width: 100%; }
+
 a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 h1, h2, h3, .h1, .h2, .h3 { font-weight: 800; letter-spacing: -.02em; }
@@ -223,7 +226,12 @@ body {
 /* Vung cham >= 44px */
 .ht-tap { min-width: 44px; min-height: 44px; }
 
-@media (max-width: 991.98px) { body.has-bottom-nav { padding-bottom: 80px; } }
+@media (max-width: 991.98px) {
+    body.has-bottom-nav { padding-bottom: 80px; }
+    /* Bottom nav 6 muc — gon lai cho vua man nho, khong xuong dong */
+    .navbar.fixed-bottom .nav-link { padding: .25rem .35rem; font-size: 10px; white-space: nowrap; }
+    .navbar.fixed-bottom .nav-link .bi { font-size: 1.15rem; }
+}
 
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; animation: none !important; }

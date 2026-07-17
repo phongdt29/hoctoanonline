@@ -1,11 +1,12 @@
 @extends('layouts.base')
 
-@section('title', 'hoctoanonline — Học toán cá nhân hóa bằng A.I')
+@section('title', 'MathAI — Học toán cá nhân hóa bằng A.I')
 
 @push('head')
 <style>
-    .hero-wrap { padding: 5rem 0 4rem; position: relative; overflow: hidden; }
-    .hero-title { font-size: clamp(2.1rem, 4.5vw, 3.4rem); line-height: 1.1; font-weight: 800; letter-spacing: -.03em; }
+    .hero-wrap { padding: 3rem 0 2.5rem; position: relative; overflow: hidden; }
+    @media (min-width: 992px) { .hero-wrap { padding: 5rem 0 4rem; } }
+    .hero-title { font-size: clamp(1.9rem, 4.5vw, 3.4rem); line-height: 1.12; font-weight: 800; letter-spacing: -.03em; }
     .hero-glow { position: absolute; width: 460px; height: 460px; border-radius: 50%;
         background: var(--ht-gradient); filter: blur(120px); opacity: .18; z-index: 0; }
     .step-num { width: 46px; height: 46px; border-radius: 14px; flex: none; font-size: 1.05rem;
@@ -21,10 +22,7 @@
 {{-- Nav --}}
 <nav class="navbar navbar-expand-lg navbar-home sticky-top py-3">
     <div class="container">
-        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="{{ route('home') }}" style="letter-spacing:-.02em">
-            <span class="ht-ico ht-ico-grad" style="width:38px;height:38px;font-size:1.05rem"><i class="bi bi-calculator-fill"></i></span>
-            hoctoanonline
-        </a>
+        <x-brand size="md" class="navbar-brand" />
         <div class="d-flex gap-2">
             @auth
                 <a href="{{ route('home') }}" class="btn btn-primary ht-tap">Vào học</a>
@@ -53,13 +51,13 @@
                     A.I đánh giá đúng năng lực thật, xây giáo trình riêng cho từng học sinh lớp 6–12,
                     và đồng hành từng buổi như một gia sư của riêng em.
                 </p>
-                <div class="d-flex flex-wrap gap-2 mb-4">
+                <div class="d-flex flex-column flex-sm-row flex-wrap gap-2 mb-4">
                     <a href="{{ route('register') }}" class="btn btn-primary btn-lg ht-tap">
                         Bắt đầu miễn phí <i class="bi bi-arrow-right ms-1"></i>
                     </a>
                     <a href="#cach-hoat-dong" class="btn btn-outline-primary btn-lg ht-tap">Xem cách hoạt động</a>
                 </div>
-                <div class="d-flex flex-wrap gap-4 text-secondary small">
+                <div class="d-flex flex-column flex-sm-row flex-wrap gap-2 gap-sm-4 text-secondary small">
                     <span><i class="bi bi-check-circle-fill text-success"></i> Không cần thẻ tín dụng</span>
                     <span><i class="bi bi-check-circle-fill text-success"></i> Gia sư A.I 24/7</span>
                     <span><i class="bi bi-check-circle-fill text-success"></i> Phụ huynh theo dõi được</span>
@@ -170,7 +168,7 @@
 {{-- Footer --}}
 <footer class="py-4 border-top mt-3">
     <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2 text-secondary small">
-        <span>© {{ now()->year }} hoctoanonline — Nền tảng học toán cá nhân hóa bằng A.I</span>
+        <span>© {{ now()->year }} MathAI — Nền tảng học toán cá nhân hóa bằng A.I</span>
         <div class="d-flex gap-3">
             <a href="{{ route('login') }}" class="text-secondary">Đăng nhập</a>
             <a href="{{ route('register') }}" class="text-secondary">Đăng ký</a>

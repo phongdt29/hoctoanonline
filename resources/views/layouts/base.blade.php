@@ -14,7 +14,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'hoctoanonline')</title>
+    <title>@yield('title', 'MathAI')</title>
 
     {{-- 1. Fonts (subset vietnamese) --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,8 +25,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-    {{-- 3. Theme override — LUON dat SAU bootstrap --}}
-    <link href="{{ asset('css/theme.css') }}" rel="stylesheet">
+    {{-- 3. Theme override — LUON dat SAU bootstrap.
+         ?v=filemtime: cache-bust — browser lay CSS moi ngay khi file doi (tranh giao dien trang do cache CSS cu). --}}
+    <link href="{{ asset('css/theme.css') }}?v={{ filemtime(public_path('css/theme.css')) }}" rel="stylesheet">
 
     {{-- 4. Mau ca nhan hoa — SAU theme.css. Gia tri da qua ThemeColor::resolve()
          nen chac chan thuoc bang 10 mau, khong phai hex tu do. --}}
@@ -42,7 +43,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}?v={{ filemtime(public_path('js/app.js')) }}"></script>
 
     @stack('scripts')
 </body>
