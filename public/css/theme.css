@@ -1,43 +1,48 @@
 /*!
- * hoctoanonline — theme.css   "Vở ô ly, mực tím — phiên bản hiện đại."
+ * hoctoanonline — theme.css   Edtech hiện đại (Duolingo/Khan Academy vibe)
  *
- * Lop NHUOM Bootstrap 5.3 qua CSS variables. KHONG Sass, KHONG build.
- * Nap SAU bootstrap.min.css.
- *
- * QUY TAC (UI-DESIGN-SPEC §2 + CLAUDE.md #8):
- *  - Gioi han 250 dong (co test khoa). Thu gi Bootstrap da co -> dung class goc, cam che lai.
- *  - Khong tu che mau/hex moi ngoai token duoi.
- *  - Doi --ht-primary MOT CHO -> nut/link/badge/progress phai doi theo (DoD F5).
+ * Lop NHUOM Bootstrap 5.3 qua CSS variables. KHONG Sass, KHONG build. Nap SAU bootstrap.
+ * Doi --ht-primary MOT CHO -> nut/link/badge/progress/gradient doi theo (ca nhan hoa).
  */
 
-/* ===== 1. TOKEN GOC (prefix --ht- de khong dung --bs-) ===== */
+/* ===== 1. DESIGN TOKENS ===== */
 :root {
-    /* Blade override 2 bien nay theo students.favorite_color (bang 10 mau trong
-       config/hoctoan.php). --ht-primary-rgb la BAT BUOC: thieu no thi
-       .text-primary / .bg-primary voi opacity se khong doi mau theo. */
+    /* Mau chu dao — Blade override theo students.favorite_color.
+       --ht-primary-rgb BAT BUOC cho .text-primary/.bg-primary opacity + gradient/shadow. */
     --ht-primary: #5B4DFF;
     --ht-primary-rgb: 91, 77, 255;
 
-    /* Dan xuat bang color-mix -> ca nhan hoa lan het moi trang thai (hover/active/soft).
-       Neu hardcode 2 bien nay, doi mau se khong lan sang hover. */
-    --ht-primary-ink: color-mix(in srgb, var(--ht-primary) 78%, #000);
-    --ht-primary-soft: color-mix(in srgb, var(--ht-primary) 12%, #fff);
+    /* Dan xuat bang color-mix -> ca nhan hoa lan het moi trang thai. */
+    --ht-primary-ink: color-mix(in srgb, var(--ht-primary) 76%, #000);
+    --ht-primary-soft: color-mix(in srgb, var(--ht-primary) 10%, #fff);
+    --ht-primary-2: color-mix(in srgb, var(--ht-primary) 62%, #C86BFF);   /* diem cuoi gradient */
+    --ht-gradient: linear-gradient(135deg, var(--ht-primary) 0%, var(--ht-primary-2) 100%);
 
-    --ht-bg: #F6F7FC;
-    --ht-ink: #1C2340;
-    --ht-ink-soft: #626C8A;
-    --ht-line: #E6E9F4;
+    /* Neutrals — am ap, hien dai */
+    --ht-bg: #F7F8FD;
+    --ht-surface: #FFFFFF;
+    --ht-ink: #171B34;
+    --ht-ink-soft: #6A7290;
+    --ht-line: #EAECF6;
+
     --ht-star: #FFB020;
-
-    /* Trang thai — UI spec §3: luon cham mau + CHU, khong bao gio mau tran */
     --ht-ok: #12A150;
     --ht-warn: #F5A524;
-    --ht-danger: #DC3545;
+    --ht-danger: #E5484D;
+
+    /* Bong nhieu lop — chieu sau tinh te */
+    --ht-shadow-sm: 0 1px 2px rgba(23, 27, 52, .06), 0 1px 3px rgba(23, 27, 52, .04);
+    --ht-shadow: 0 4px 14px -4px rgba(23, 27, 52, .10), 0 2px 6px -2px rgba(23, 27, 52, .05);
+    --ht-shadow-lg: 0 18px 40px -12px rgba(23, 27, 52, .16), 0 6px 16px -6px rgba(23, 27, 52, .08);
+    --ht-shadow-primary: 0 10px 24px -6px rgba(var(--ht-primary-rgb), .45);
+
+    --ht-radius: 1.25rem;    /* 20px card */
+    --ht-radius-sm: .875rem; /* 14px button/input */
 
     --font-num: 'IBM Plex Mono', ui-monospace, monospace;
 }
 
-/* ===== 2. MAP VAO BIEN BOOTSTRAP (cach chuan 5.3, khong can Sass) ===== */
+/* ===== 2. MAP BOOTSTRAP VARS ===== */
 :root {
     --bs-body-font-family: 'Be Vietnam Pro', system-ui, sans-serif;
     --bs-body-bg: var(--ht-bg);
@@ -48,153 +53,179 @@
     --bs-link-color: var(--ht-primary);
     --bs-link-color-rgb: var(--ht-primary-rgb);
     --bs-link-hover-color: var(--ht-primary-ink);
-    --bs-border-radius: .75rem;
-    --bs-border-radius-lg: 1rem;
+    --bs-link-decoration: none;
+    --bs-border-radius: var(--ht-radius-sm);
+    --bs-border-radius-lg: var(--ht-radius);
     --bs-secondary-color: var(--ht-ink-soft);
+    --bs-heading-color: var(--ht-ink);
 }
+
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+h1, h2, h3, .h1, .h2, .h3 { font-weight: 800; letter-spacing: -.02em; }
+h4, h5, h6, .h4, .h5, .h6 { font-weight: 700; letter-spacing: -.01em; }
+
+/* ===== 3. NUT ===== */
+.btn { --bs-btn-border-radius: var(--ht-radius-sm); font-weight: 600; transition: transform .12s ease, box-shadow .2s ease, background .2s ease; }
+.btn:active { transform: translateY(1px); }
 
 .btn-primary {
     --bs-btn-bg: var(--ht-primary);
-    --bs-btn-border-color: var(--ht-primary);
+    --bs-btn-border-color: transparent;
     --bs-btn-hover-bg: var(--ht-primary-ink);
-    --bs-btn-hover-border-color: var(--ht-primary-ink);
+    --bs-btn-hover-border-color: transparent;
     --bs-btn-active-bg: var(--ht-primary-ink);
-    --bs-btn-active-border-color: var(--ht-primary-ink);
+    --bs-btn-active-border-color: transparent;
     --bs-btn-disabled-bg: var(--ht-primary);
-    --bs-btn-disabled-border-color: var(--ht-primary);
+    --bs-btn-disabled-border-color: transparent;
     --bs-btn-focus-shadow-rgb: var(--ht-primary-rgb);
-    font-weight: 600;
+    background-image: var(--ht-gradient);
+    border: none;
+    box-shadow: var(--ht-shadow-primary);
 }
+.btn-primary:hover { box-shadow: 0 14px 30px -6px rgba(var(--ht-primary-rgb), .55); transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
 
 .btn-outline-primary {
     --bs-btn-color: var(--ht-primary);
     --bs-btn-border-color: var(--ht-line);
+    --bs-btn-bg: #fff;
     --bs-btn-hover-bg: var(--ht-primary-soft);
     --bs-btn-hover-color: var(--ht-primary-ink);
     --bs-btn-hover-border-color: var(--ht-primary);
     --bs-btn-active-bg: var(--ht-primary-soft);
     --bs-btn-active-color: var(--ht-primary-ink);
     --bs-btn-focus-shadow-rgb: var(--ht-primary-rgb);
-    font-weight: 600;
 }
+.btn-lg { --bs-btn-padding-y: .8rem; --bs-btn-padding-x: 1.6rem; --bs-btn-font-size: 1.05rem; }
 
+/* ===== 4. CARD ===== */
 .card {
-    --bs-card-border-color: var(--ht-line);
-    --bs-card-border-radius: 1rem;
-    --bs-card-bg: #fff;
-    box-shadow: 0 1px 2px rgba(28, 35, 64, .05), 0 8px 24px rgba(28, 35, 64, .06);
+    --bs-card-border-color: transparent;
+    --bs-card-border-radius: var(--ht-radius);
+    --bs-card-bg: var(--ht-surface);
+    border: 1px solid var(--ht-line);
+    box-shadow: var(--ht-shadow-sm);
+    transition: transform .18s ease, box-shadow .18s ease;
 }
+/* Card co the click (co <a> phu trong) — nang nhe khi hover */
+.card.ht-hover:hover { transform: translateY(-3px); box-shadow: var(--ht-shadow-lg); }
+.card-body { padding: 1.5rem; }
 
+/* ===== 5. FORM ===== */
+.form-control, .form-select {
+    border-radius: var(--ht-radius-sm);
+    border-color: var(--ht-line);
+    padding: .7rem .9rem;
+    background-color: #fff;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+.form-control:focus, .form-select:focus {
+    border-color: var(--ht-primary);
+    box-shadow: 0 0 0 .2rem rgba(var(--ht-primary-rgb), .18);
+}
+.form-label { font-weight: 600; color: var(--ht-ink); }
+
+/* ===== 6. NAV / BADGE / PROGRESS ===== */
 .nav-pills {
+    --bs-nav-pills-border-radius: var(--ht-radius-sm);
     --bs-nav-pills-link-active-bg: var(--ht-primary-soft);
     --bs-nav-pills-link-active-color: var(--ht-primary);
 }
-.nav-pills .nav-link { color: var(--ht-ink-soft); font-weight: 600; }
+.nav-pills .nav-link { color: var(--ht-ink-soft); font-weight: 600; transition: background .15s ease, color .15s ease; }
+.nav-pills .nav-link:hover { background: color-mix(in srgb, var(--ht-primary) 6%, #fff); color: var(--ht-primary); }
 
 .progress {
-    --bs-progress-bar-bg: var(--ht-primary);
+    --bs-progress-bar-bg: transparent;
     --bs-progress-bg: var(--ht-primary-soft);
-    --bs-progress-height: .625rem;
+    --bs-progress-height: .7rem;
     border-radius: 999px;
+    overflow: hidden;
+}
+.progress-bar { background-image: var(--ht-gradient); border-radius: 999px; }
+
+.badge { font-weight: 600; border-radius: 999px; padding: .4em .75em; }
+.text-bg-primary { background: var(--ht-gradient) !important; }
+
+/* Glass navbar (landing + admin) */
+.navbar-home, .glass {
+    background: rgba(255, 255, 255, .72);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
 }
 
-.form-control:focus, .form-select:focus {
-    border-color: var(--ht-primary);
-    box-shadow: 0 0 0 .25rem rgba(var(--ht-primary-rgb), .25);
-}
-
-.badge { font-weight: 600; }
-
-/* ===== 3. CHAT RIENG (Bootstrap khong co) ===== */
-
-/* SIGNATURE 1: nen giay o ly. Dung --ht-primary-rgb de luoi doi mau theo hoc sinh. */
+/* ===== 7. NEN — glow mem + luoi o ly rat nhe (giu ban sac, bot roi) ===== */
 body {
+    background-color: var(--ht-bg);
     background-image:
-        linear-gradient(rgba(var(--ht-primary-rgb), .045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(var(--ht-primary-rgb), .045) 1px, transparent 1px);
-    background-size: 24px 24px;
+        radial-gradient(1200px 600px at 50% -8%, rgba(var(--ht-primary-rgb), .10), transparent 60%),
+        linear-gradient(rgba(var(--ht-primary-rgb), .028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(var(--ht-primary-rgb), .028) 1px, transparent 1px);
+    background-size: 100% 100%, 26px 26px, 26px 26px;
     background-attachment: fixed;
 }
 
-/* SIGNATURE 2: Mastery Grid — tien do kieu "to o vo", moi o = 1 lesson */
-.ht-mastery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15px, 1fr));
-    gap: 5px;
-}
+/* ===== 8. SIGNATURE: Mastery Grid ===== */
+.ht-mastery { display: grid; grid-template-columns: repeat(auto-fill, minmax(16px, 1fr)); gap: 5px; }
 .ht-mastery .cell {
-    aspect-ratio: 1;
-    border-radius: 4px;
-    border: 1.5px solid var(--ht-line);
-    background: #fff;
-    transition: transform .15s ease-out;
+    aspect-ratio: 1; border-radius: 5px; border: 1.5px solid var(--ht-line);
+    background: #fff; transition: transform .15s ease-out, box-shadow .15s ease;
 }
-.ht-mastery .cell.done { background: var(--ht-primary); border-color: var(--ht-primary); }
+.ht-mastery .cell.done { background: var(--ht-gradient); border-color: transparent; box-shadow: 0 2px 6px -2px rgba(var(--ht-primary-rgb), .5); }
 .ht-mastery .cell.now { background: var(--ht-primary-soft); border-color: var(--ht-primary); }
-.ht-mastery .cell:hover, .ht-mastery .cell:focus-visible { transform: scale(1.25); }
-
-/* Khoanh khac signature (ticket L5): quiz >= 8 -> o to mau lan. 1 lan, khong confetti. */
+.ht-mastery .cell:hover, .ht-mastery .cell:focus-visible { transform: scale(1.28); z-index: 1; }
 @keyframes ht-fill { from { transform: scale(0); } to { transform: scale(1); } }
 .ht-mastery .cell.just-done { animation: ht-fill .4s ease-out; }
 
-/* So lieu (diem, %, timer) — UI spec §3 bat buoc class .num.
-   tabular-nums: so khong nhay ngang khi dem nguoc quiz. */
-.num { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+/* So lieu */
+.num { font-family: var(--font-num); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
 
-/* Thanh mix 20/60/20 cua recommendation (SPEC §3.3) */
-.ht-mix { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: var(--ht-line); }
+/* Thanh mix 20/60/20 */
+.ht-mix { display: flex; height: 12px; border-radius: 999px; overflow: hidden; background: var(--ht-line); }
 .ht-mix .m-review { background: var(--ht-warn); }
-.ht-mix .m-new { background: var(--ht-primary); }
+.ht-mix .m-new { background: var(--ht-gradient); }
 .ht-mix .m-fix { background: var(--ht-ok); }
 
-/* Cham trang thai — LUON di kem chu (nguoi mu mau khong doc duoc mau tran) */
-.badge .dot {
-    display: inline-block;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    margin-right: 6px;
-    flex: none;
-}
-.dot-ok { background: var(--ht-ok); }
-.dot-warn { background: var(--ht-warn); }
-.dot-danger { background: var(--ht-danger); }
+/* Cham trang thai — LUON kem chu */
+.badge .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; flex: none; }
+.dot-ok { background: var(--ht-ok); } .dot-warn { background: var(--ht-warn); } .dot-danger { background: var(--ht-danger); }
 
-/* Bong bong chat AI Tutor (ticket I1) */
-.ht-bubble { max-width: min(80%, 44rem); padding: .625rem .875rem; border-radius: 1rem; line-height: 1.55; }
-.ht-bubble-student { background: var(--ht-primary); color: #fff; border-bottom-right-radius: .25rem; }
-.ht-bubble-ai { background: #fff; border: 1px solid var(--ht-line); border-bottom-left-radius: .25rem; }
+/* Chat bubble */
+.ht-bubble { max-width: min(80%, 44rem); padding: .7rem .95rem; border-radius: 1.15rem; line-height: 1.55; box-shadow: var(--ht-shadow-sm); }
+.ht-bubble-student { background: var(--ht-gradient); color: #fff; border-bottom-right-radius: .3rem; }
+.ht-bubble-ai { background: #fff; border: 1px solid var(--ht-line); border-bottom-left-radius: .3rem; }
 
-/* "dang soan..." — 3 cham nhun */
-.ht-typing span {
-    display: inline-block;
-    width: 6px; height: 6px;
-    margin-right: 3px;
-    border-radius: 50%;
-    background: var(--ht-ink-soft);
-    animation: ht-bounce 1.2s infinite;
-}
+/* "dang soan..." */
+.ht-typing span { display: inline-block; width: 6px; height: 6px; margin-right: 3px; border-radius: 50%; background: var(--ht-ink-soft); animation: ht-bounce 1.2s infinite; }
 .ht-typing span:nth-child(2) { animation-delay: .15s; }
 .ht-typing span:nth-child(3) { animation-delay: .3s; }
-@keyframes ht-bounce {
-    0%, 60%, 100% { transform: translateY(0); opacity: .5; }
-    30% { transform: translateY(-4px); opacity: 1; }
+@keyframes ht-bounce { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-4px); opacity: 1; } }
+
+/* Feature icon (landing/cards) */
+.ht-ico {
+    width: 52px; height: 52px; border-radius: 16px; flex: none;
+    display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem;
+    color: var(--ht-primary); background: var(--ht-primary-soft);
+}
+.ht-ico-grad { color: #fff; background: var(--ht-gradient); box-shadow: var(--ht-shadow-primary); }
+
+/* Chu gradient (hero) */
+.ht-text-grad {
+    background: var(--ht-gradient); -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
 }
 
-/* Card vao trang: fade + rise 8px, mot lan */
-@keyframes ht-rise {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: none; }
-}
-.ht-rise { animation: ht-rise .3s ease-out both; }
+/* Vao trang: fade + rise */
+@keyframes ht-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.ht-rise { animation: ht-rise .4s cubic-bezier(.2, .7, .3, 1) both; }
+.ht-rise-2 { animation-delay: .06s; } .ht-rise-3 { animation-delay: .12s; }
 
-/* Vung cham >= 44px (UI spec §5) */
+/* Vung cham >= 44px */
 .ht-tap { min-width: 44px; min-height: 44px; }
 
-/* Bottom tab mobile — chua noi dung khoi bi che */
-@media (max-width: 991.98px) {
-    body.has-bottom-nav { padding-bottom: 76px; }
-}
+@media (max-width: 991.98px) { body.has-bottom-nav { padding-bottom: 80px; } }
 
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; animation: none !important; }
+    .btn-primary:hover, .card.ht-hover:hover { transform: none; }
 }

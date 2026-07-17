@@ -6,6 +6,7 @@ use App\Models\Student;
 use App\Models\User;
 use App\Services\Payment\PaymentService;
 use App\Services\Payment\VnpayGateway;
+use Illuminate\Support\Facades\Http;
 
 /*
  * Ticket R3 — luong thanh toan VNPAY that (credentials sandbox trong config test).
@@ -177,6 +178,15 @@ function configMomo(): void
         'payment.momo.secret_key' => 'momo-secret-key',
         'payment.momo.pay_url' => 'https://test-payment.momo.vn/pay',
     ]);
+
+    // MOMO create API doi POST server-to-server -> mock tra payUrl.
+    Http::fake([
+        'test-payment.momo.vn/*' => Http::response([
+            'resultCode' => 0,
+            'message' => 'Success',
+            'payUrl' => 'https://test-payment.momo.vn/pay/redirect-abc123',
+        ]),
+    ]);
 }
 
 it('R3 MOMO: checkout tao giao dich momo + redirect', function () {
@@ -188,6 +198,28 @@ it('R3 MOMO: checkout tao giao dich momo + redirect', function () {
 
     expect($res->headers->get('Location'))->toContain('momo')
         ->and(Payment::where('gateway', 'momo')->where('status', 'pending')->count())->toBe(1);
+});
+
+it('R3 MOMO: API tra loi (resultCode != 0) -> quay lai pricing bao loi, khong 500', function () {
+    config([
+        'payment.default' => 'momo',
+        'payment.momo.partner_code' => 'MOMO_TEST',
+        'payment.momo.access_key' => 'momo-access',
+        'payment.momo.secret_key' => 'momo-secret-key',
+        'payment.momo.pay_url' => 'https://test-payment.momo.vn/pay',
+    ]);
+    // MoMo tra loi cau hinh (vd sai chu ky/format).
+    Http::fake([
+        'test-payment.momo.vn/*' => Http::response(['resultCode' => 20, 'message' => 'Bad format request.']),
+    ]);
+
+    $this->actingAs($this->user)
+        ->post(route('payment.checkout', $this->plan), ['gateway' => 'momo'])
+        ->assertRedirect(route('pricing'))
+        ->assertSessionHasErrors('gateway');
+
+    // Giao dich pending duoc tao nhung khong redirect sang cong loi.
+    expect(Payment::where('gateway', 'momo')->where('status', 'pending')->exists())->toBeTrue();
 });
 
 it('DoD R3 MOMO: IPN chu ky hop le + tien khop -> paid', function () {

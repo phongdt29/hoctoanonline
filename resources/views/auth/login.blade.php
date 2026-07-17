@@ -57,6 +57,47 @@
 
     <button type="submit" class="btn btn-primary w-100 ht-tap">Đăng nhập</button>
 </form>
+
+{{-- Tai khoan test — CHI hien khi KHONG phai production (khong lo tai khoan test that) --}}
+@if (config('app.env') !== 'production')
+    @php
+        $testAccounts = [
+            ['Học sinh (có lộ trình sẵn)', 'student1@hoctoan.test', 'password', 'bi-mortarboard', 'primary'],
+            ['Học sinh mới (thử onboarding)', 'student2@hoctoan.test', 'password', 'bi-person-plus', 'primary'],
+            ['Phụ huynh', 'parent1@hoctoan.test', 'password', 'bi-people', 'success'],
+            ['Giáo viên', 'teacher1@hoctoan.test', 'password', 'bi-easel', 'warning'],
+            ['Admin', 'admin@gmail.com', 'admin@', 'bi-shield-lock', 'danger'],
+        ];
+    @endphp
+    <div class="mt-4 pt-3 border-top">
+        <p class="small text-secondary mb-2">
+            <i class="bi bi-flask"></i> Tài khoản test — bấm để đăng nhập nhanh
+        </p>
+        <div class="d-grid gap-2">
+            @foreach ($testAccounts as [$label, $email, $pass, $icon, $color])
+                <button type="button"
+                        class="btn btn-sm btn-outline-{{ $color }} text-start ht-tap js-test-login"
+                        data-email="{{ $email }}"
+                        data-password="{{ $pass }}">
+                    <i class="bi {{ $icon }}"></i> {{ $label }}
+                    <span class="text-secondary d-block small">{{ $email }}</span>
+                </button>
+            @endforeach
+        </div>
+    </div>
+
+    @push('scripts')
+    <script>
+        document.querySelectorAll('.js-test-login').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.getElementById('email').value = this.dataset.email;
+                document.getElementById('password').value = this.dataset.password;
+                this.closest('.card').querySelector('form').submit();
+            });
+        });
+    </script>
+    @endpush
+@endif
 @endsection
 
 @section('footer-link')

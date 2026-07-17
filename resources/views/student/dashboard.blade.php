@@ -20,7 +20,7 @@
 <div class="row g-4">
 
     {{-- Thong ke --}}
-    <div class="col-12">
+    <div class="col-12 ht-rise">
         <x-card>
             <div class="row g-4">
                 <div class="col-6 col-md-3">
@@ -47,7 +47,7 @@
     </div>
 
     {{-- Goi y hom nay: thanh mix 20/60/20 --}}
-    <div class="col-12 col-lg-7">
+    <div class="col-12 col-lg-7 ht-rise ht-rise-2">
         <x-card title="Gợi ý học hôm nay" icon="bi-lightbulb">
             @php $mix = $d['today_recommendation']['mix']; @endphp
 
@@ -68,9 +68,12 @@
                 <p class="small fw-semibold mb-2">Bài mới hôm nay:</p>
                 @foreach ($new as $lesson)
                     <a href="{{ route('lessons.show', $lesson['id']) }}"
-                       class="d-flex align-items-center gap-2 border rounded-3 p-2 mb-2 text-decoration-none">
-                        <i class="bi bi-play-circle text-primary"></i>
-                        <span class="small flex-grow-1 text-body">{{ $lesson['title'] }}</span>
+                       class="d-flex align-items-center gap-3 rounded-3 p-3 mb-2 text-decoration-none"
+                       style="border:1px solid var(--ht-line); transition:border-color .15s, box-shadow .15s"
+                       onmouseover="this.style.borderColor='var(--ht-primary)';this.style.boxShadow='var(--ht-shadow)'"
+                       onmouseout="this.style.borderColor='var(--ht-line)';this.style.boxShadow='none'">
+                        <span class="ht-ico" style="width:38px;height:38px;font-size:1.1rem"><i class="bi bi-play-fill"></i></span>
+                        <span class="small flex-grow-1 fw-semibold text-body">{{ $lesson['title'] }}</span>
                         <i class="bi bi-arrow-right text-secondary"></i>
                     </a>
                 @endforeach
@@ -81,7 +84,7 @@
     </div>
 
     {{-- Mastery grid + diem yeu --}}
-    <div class="col-12 col-lg-5">
+    <div class="col-12 col-lg-5 ht-rise ht-rise-3">
         <x-card title="Tiến độ lộ trình" icon="bi-grid-3x3" class="mb-4">
             <x-mastery-grid :lessons="$lessons" />
         </x-card>

@@ -7,6 +7,27 @@ use InvalidArgumentException;
 /** Ticket R3 — tao gateway tu config. Code nghiep vu goi make(), khong new truc tiep. */
 class PaymentGatewayFactory
 {
+    /** Cac cong DA cau hinh (co du credentials) — de UI chi hien nut cong dung duoc. */
+    public function configured(): array
+    {
+        $out = [];
+
+        if (config('payment.vnpay.tmn_code') && config('payment.vnpay.hash_secret')) {
+            $out[] = 'vnpay';
+        }
+
+        if (config('payment.momo.partner_code') && config('payment.momo.access_key') && config('payment.momo.secret_key')) {
+            $out[] = 'momo';
+        }
+
+        return $out;
+    }
+
+    public function isConfigured(string $name): bool
+    {
+        return in_array($name, $this->configured(), true);
+    }
+
     public function make(?string $name = null): PaymentGateway
     {
         $name ??= config('payment.default');

@@ -16,10 +16,11 @@ class PaymentController extends Controller
     public function __construct(private readonly PaymentService $payments) {}
 
     /** GET /pricing — trang chon goi hoc. */
-    public function pricing(): View
+    public function pricing(\App\Services\Payment\PaymentGatewayFactory $factory): View
     {
         return view('payment.pricing', [
             'plans' => Plan::where('is_active', true)->orderBy('price')->get(),
+            'gateways' => $factory->configured(),   // chi hien cong da cau hinh
             'themeColor' => request()->user()?->student?->favorite_color,
         ]);
     }
@@ -32,15 +33,31 @@ class PaymentController extends Controller
         abort_unless($plan->is_active, 404);
 
         $gateway = $request->input('gateway', config('payment.default'));
-        abort_unless(in_array($gateway, ['vnpay', 'momo'], true), 422, 'Cổng thanh toán không hợp lệ.');
-
-        $result = $this->payments->initiate(
-            $student,
-            $plan,
-            route('payment.return'),
-            $request->ip(),
-            $gateway,
+        // Chi cho thanh toan qua cong DA cau hinh (co credentials) — tranh redirect
+        // sang cong loi "Bad format request".
+        abort_unless(
+            app(\App\Services\Payment\PaymentGatewayFactory::class)->isConfigured($gateway),
+            422,
+            'Cổng thanh toán này chưa được cấu hình. Vui lòng chọn cổng khác.',
         );
+
+        try {
+            $result = $this->payments->initiate(
+                $student,
+                $plan,
+                route('payment.return'),
+                $request->ip(),
+                $gateway,
+            );
+        } catch (\Throwable $e) {
+            // Cong loi (vd MoMo tra resultCode != 0) -> quay lai pricing bao loi,
+            // KHONG de 500 tho ra man hinh.
+            report($e);
+
+            return redirect()->route('pricing')
+                ->with('status', null)
+                ->withErrors(['gateway' => 'Không kết nối được cổng thanh toán lúc này. Vui lòng thử lại hoặc chọn cổng khác.']);
+        }
 
         return redirect()->away($result['pay_url']);
     }

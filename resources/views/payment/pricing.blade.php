@@ -8,11 +8,21 @@
 <div class="mx-auto" style="max-width:900px">
     <div class="text-center mb-4">
         <h2 class="h4 fw-bold">Nâng cấp để học không giới hạn</h2>
-        <p class="text-secondary">Chọn gói phù hợp — thanh toán an toàn qua VNPAY hoặc MoMo.</p>
+        <p class="text-secondary">Chọn gói phù hợp — thanh toán an toàn, xác thực chữ ký.</p>
     </div>
 
     @if (session('status'))
         <div class="alert alert-success py-2 small">{{ session('status') }}</div>
+    @endif
+
+    @error('gateway')
+        <div class="alert alert-danger py-2 small">{{ $message }}</div>
+    @enderror
+
+    @if (empty($gateways))
+        <div class="alert alert-warning small">
+            Chưa có cổng thanh toán nào được cấu hình. Vui lòng liên hệ quản trị viên.
+        </div>
     @endif
 
     <div class="row g-4">
@@ -36,18 +46,22 @@
                             @endforeach
                         </ul>
 
-                        {{-- Chon cong thanh toan --}}
+                        {{-- Chi hien cong DA cau hinh (co credentials) — tranh nut hong --}}
                         <form method="POST" action="{{ route('payment.checkout', $plan) }}" class="mt-3">
                             @csrf
                             <div class="d-grid gap-2">
-                                <button type="submit" name="gateway" value="vnpay"
-                                        class="btn btn-primary ht-tap">
-                                    <i class="bi bi-credit-card"></i> Thanh toán VNPAY
-                                </button>
-                                <button type="submit" name="gateway" value="momo"
-                                        class="btn btn-outline-primary ht-tap">
-                                    <i class="bi bi-wallet2"></i> Thanh toán MoMo
-                                </button>
+                                @if (in_array('vnpay', $gateways))
+                                    <button type="submit" name="gateway" value="vnpay"
+                                            class="btn btn-primary ht-tap">
+                                        <i class="bi bi-credit-card"></i> Thanh toán VNPAY
+                                    </button>
+                                @endif
+                                @if (in_array('momo', $gateways))
+                                    <button type="submit" name="gateway" value="momo"
+                                            class="btn btn-outline-primary ht-tap">
+                                        <i class="bi bi-wallet2"></i> Thanh toán MoMo
+                                    </button>
+                                @endif
                             </div>
                         </form>
                     </div>

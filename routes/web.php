@@ -115,7 +115,7 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
 
 // Admin + staff
 Route::middleware(['auth', 'role:admin,staff'])->group(function () {
-    Route::view('/admin', 'stub', ['title' => 'Quản trị', 'ticket' => 'T3'])
+    Route::get('/admin', [\App\Http\Controllers\Admin\ReportController::class, 'index'])
         ->name('admin.home');
 });
 

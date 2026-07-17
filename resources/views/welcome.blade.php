@@ -4,28 +4,25 @@
 
 @push('head')
 <style>
-    .hero-wrap { padding: 4rem 0 3rem; }
-    .hero-title { font-size: clamp(1.9rem, 4vw, 3rem); line-height: 1.15; font-weight: 800; }
-    .feature-ico {
-        width: 52px; height: 52px; border-radius: 14px;
-        background: var(--ht-primary-soft); color: var(--ht-primary);
-        display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
-    }
-    .step-num {
-        width: 40px; height: 40px; border-radius: 50%; flex: none;
-        background: var(--ht-primary); color: #fff;
-        display: flex; align-items: center; justify-content: center; font-weight: 700;
-    }
-    .navbar-home { backdrop-filter: blur(8px); background: rgba(255,255,255,.8); }
+    .hero-wrap { padding: 5rem 0 4rem; position: relative; overflow: hidden; }
+    .hero-title { font-size: clamp(2.1rem, 4.5vw, 3.4rem); line-height: 1.1; font-weight: 800; letter-spacing: -.03em; }
+    .hero-glow { position: absolute; width: 460px; height: 460px; border-radius: 50%;
+        background: var(--ht-gradient); filter: blur(120px); opacity: .18; z-index: 0; }
+    .step-num { width: 46px; height: 46px; border-radius: 14px; flex: none; font-size: 1.05rem;
+        display: flex; align-items: center; justify-content: center; font-weight: 800;
+        color: #fff; background: var(--ht-gradient); box-shadow: var(--ht-shadow-primary); }
+    .float-card { animation: ht-float 5s ease-in-out infinite; }
+    @keyframes ht-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @media (prefers-reduced-motion: reduce) { .float-card { animation: none; } }
 </style>
 @endpush
 
 @section('body')
 {{-- Nav --}}
-<nav class="navbar navbar-expand-lg navbar-home sticky-top border-bottom">
+<nav class="navbar navbar-expand-lg navbar-home sticky-top py-3">
     <div class="container">
-        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
-            <span class="feature-ico" style="width:36px;height:36px;font-size:1rem"><i class="bi bi-calculator-fill"></i></span>
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="{{ route('home') }}" style="letter-spacing:-.02em">
+            <span class="ht-ico ht-ico-grad" style="width:38px;height:38px;font-size:1.05rem"><i class="bi bi-calculator-fill"></i></span>
             hoctoanonline
         </a>
         <div class="d-flex gap-2">
@@ -41,38 +38,40 @@
 
 {{-- Hero --}}
 <header class="hero-wrap">
-    <div class="container">
+    <div class="hero-glow" style="top:-140px; left:-80px"></div>
+    <div class="hero-glow" style="bottom:-200px; right:-120px; opacity:.12"></div>
+    <div class="container position-relative">
         <div class="row align-items-center g-5">
-            <div class="col-lg-6">
-                <span class="badge rounded-pill text-bg-light border mb-3">
-                    <i class="bi bi-stars text-primary"></i> Cá nhân hóa bằng trí tuệ nhân tạo
+            <div class="col-lg-6 ht-rise">
+                <span class="badge rounded-pill mb-3 px-3 py-2" style="background:var(--ht-primary-soft); color:var(--ht-primary)">
+                    <i class="bi bi-stars"></i> Cá nhân hóa bằng trí tuệ nhân tạo
                 </span>
                 <h1 class="hero-title mb-3">
-                    Học toán theo <span class="text-primary">lộ trình riêng</span> của chính bạn
+                    Học toán theo <span class="ht-text-grad">lộ trình riêng</span> của chính bạn
                 </h1>
-                <p class="fs-5 text-secondary mb-4">
+                <p class="fs-5 text-secondary mb-4" style="max-width:34rem">
                     A.I đánh giá đúng năng lực thật, xây giáo trình riêng cho từng học sinh lớp 6–12,
                     và đồng hành từng buổi như một gia sư của riêng em.
                 </p>
                 <div class="d-flex flex-wrap gap-2 mb-4">
                     <a href="{{ route('register') }}" class="btn btn-primary btn-lg ht-tap">
-                        Bắt đầu miễn phí <i class="bi bi-arrow-right"></i>
+                        Bắt đầu miễn phí <i class="bi bi-arrow-right ms-1"></i>
                     </a>
                     <a href="#cach-hoat-dong" class="btn btn-outline-primary btn-lg ht-tap">Xem cách hoạt động</a>
                 </div>
                 <div class="d-flex flex-wrap gap-4 text-secondary small">
                     <span><i class="bi bi-check-circle-fill text-success"></i> Không cần thẻ tín dụng</span>
-                    <span><i class="bi bi-check-circle-fill text-success"></i> Có gia sư A.I 24/7</span>
+                    <span><i class="bi bi-check-circle-fill text-success"></i> Gia sư A.I 24/7</span>
                     <span><i class="bi bi-check-circle-fill text-success"></i> Phụ huynh theo dõi được</span>
                 </div>
             </div>
-            <div class="col-lg-6">
-                {{-- Mockup dashboard nho --}}
-                <div class="card shadow-sm">
+            <div class="col-lg-6 ht-rise ht-rise-2">
+                {{-- Mockup dashboard --}}
+                <div class="card float-card" style="box-shadow:var(--ht-shadow-lg)">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="fw-semibold">Lộ trình của bạn</span>
-                            <span class="badge rounded-pill text-bg-light border"><span class="num">72</span>% hoàn thành</span>
+                            <span class="fw-bold">Lộ trình của bạn</span>
+                            <span class="badge rounded-pill" style="background:var(--ht-primary-soft);color:var(--ht-primary)"><span class="num">72</span>% hoàn thành</span>
                         </div>
                         <div class="ht-mastery mb-3">
                             @for ($i = 0; $i < 40; $i++)
@@ -113,10 +112,10 @@
                 ['bi-shield-check', 'Phụ huynh đồng hành', 'Theo dõi thời gian học thật, cảnh báo sớm, đèn tín hiệu xanh/vàng/đỏ dễ hiểu.'],
             ] as [$icon, $title, $desc])
                 <div class="col-md-6 col-lg-4">
-                    <div class="card h-100">
+                    <div class="card ht-hover h-100">
                         <div class="card-body p-4">
-                            <div class="feature-ico mb-3"><i class="bi {{ $icon }}"></i></div>
-                            <h3 class="h6 fw-semibold">{{ $title }}</h3>
+                            <div class="ht-ico mb-3"><i class="bi {{ $icon }}"></i></div>
+                            <h3 class="h6 fw-bold">{{ $title }}</h3>
                             <p class="text-secondary small mb-0">{{ $desc }}</p>
                         </div>
                     </div>
@@ -127,7 +126,7 @@
 </section>
 
 {{-- Cách hoạt động --}}
-<section id="cach-hoat-dong" class="py-5 bg-white border-top border-bottom">
+<section id="cach-hoat-dong" class="py-5">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="h3 fw-bold">Chỉ 4 bước để bắt đầu</h2>
@@ -143,7 +142,7 @@
                     <div class="d-flex gap-3">
                         <div class="step-num num">{{ $i + 1 }}</div>
                         <div>
-                            <h3 class="h6 fw-semibold mb-1">{{ $title }}</h3>
+                            <h3 class="h6 fw-bold mb-1">{{ $title }}</h3>
                             <p class="text-secondary small mb-0">{{ $desc }}</p>
                         </div>
                     </div>
@@ -156,12 +155,12 @@
 {{-- CTA --}}
 <section class="py-5">
     <div class="container">
-        <div class="card border-0" style="background: var(--ht-primary); color: #fff">
-            <div class="card-body p-5 text-center">
+        <div class="card border-0 text-center overflow-hidden" style="background:var(--ht-gradient); color:#fff; box-shadow:var(--ht-shadow-lg)">
+            <div class="card-body p-5">
                 <h2 class="h3 fw-bold mb-2">Sẵn sàng học toán theo cách của riêng bạn?</h2>
                 <p class="mb-4 opacity-75">Miễn phí bắt đầu. Không cần thẻ. Có ngay lộ trình sau bài test đầu vào.</p>
-                <a href="{{ route('register') }}" class="btn btn-light btn-lg ht-tap fw-semibold">
-                    Đăng ký miễn phí ngay
+                <a href="{{ route('register') }}" class="btn btn-light btn-lg ht-tap fw-bold px-4" style="color:var(--ht-primary)">
+                    Đăng ký miễn phí ngay <i class="bi bi-arrow-right ms-1"></i>
                 </a>
             </div>
         </div>
@@ -169,7 +168,7 @@
 </section>
 
 {{-- Footer --}}
-<footer class="py-4 border-top">
+<footer class="py-4 border-top mt-3">
     <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2 text-secondary small">
         <span>© {{ now()->year }} hoctoanonline — Nền tảng học toán cá nhân hóa bằng A.I</span>
         <div class="d-flex gap-3">
