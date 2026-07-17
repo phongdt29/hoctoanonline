@@ -33,6 +33,15 @@
                         <span style="font-size:11px">{{ $item['label'] }}</span>
                     </a>
                 @endforeach
+
+                {{-- Dang xuat --}}
+                <form method="POST" action="{{ route('logout') }}" class="mt-2 pt-2 border-top">
+                    @csrf
+                    <button type="submit" class="nav-link ht-tap px-1 py-2 text-secondary w-100 border-0 bg-transparent">
+                        <i class="bi bi-box-arrow-right d-block fs-5 mb-1"></i>
+                        <span style="font-size:11px">Đăng xuất</span>
+                    </button>
+                </form>
             </nav>
         </aside>
 

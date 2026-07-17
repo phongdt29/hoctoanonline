@@ -3,12 +3,6 @@
 @section('title', 'Báo cáo hệ thống')
 @section('page-title', 'Báo cáo tổng quan hệ thống')
 
-@section('topbar-chips')
-    <form method="POST" action="{{ route('logout') }}">@csrf
-        <button class="btn btn-sm btn-outline-primary">Đăng xuất</button>
-    </form>
-@endsection
-
 @section('page-actions')
     <a href="{{ url('/admin/ai-providers') }}" class="btn btn-sm btn-outline-primary d-none">AI Providers</a>
     <button onclick="window.print()" class="btn btn-sm btn-outline-primary"><i class="bi bi-printer"></i> In</button>
@@ -127,8 +121,56 @@
         </x-card>
     </div>
 
-    {{-- System counts --}}
+    {{-- Chi phi AI / Token --}}
     <div class="col-12 col-lg-7">
+        <x-card title="Chi phí & token A.I" icon="bi-coin">
+            @php $t = $r['tokens']; @endphp
+            <div class="row g-3 mb-3">
+                <div class="col-6 col-md-3">
+                    <div class="text-secondary small">Tổng token</div>
+                    <div class="num fs-5 fw-bold">{{ $num($t['all_time']['total']) }}</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="text-secondary small">Token vào / ra</div>
+                    <div class="num small fw-semibold">{{ $num($t['all_time']['prompt']) }} / {{ $num($t['all_time']['completion']) }}</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="text-secondary small">Chi phí ước tính</div>
+                    <div class="num fs-5 fw-bold text-primary">{{ $vnd($t['cost_all_vnd']) }}</div>
+                    <div class="text-secondary" style="font-size:11px">≈ ${{ number_format($t['cost_all_usd'], 4) }}</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="text-secondary small">30 ngày gần đây</div>
+                    <div class="num fs-6 fw-bold">{{ $num($t['last_30d']['total']) }} tok</div>
+                    <div class="text-secondary" style="font-size:11px">{{ $vnd($t['cost_30d_vnd']) }}</div>
+                </div>
+            </div>
+
+            <div class="small text-secondary mb-1">Token theo tính năng:</div>
+            @forelse ($t['by_feature'] as $feature => $tok)
+                @php $maxTok = max(1, max($t['by_feature'])); @endphp
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="small" style="width:120px">{{ $feature }}</span>
+                    <div class="progress flex-grow-1" style="height:.5rem">
+                        <div class="progress-bar" style="width:{{ round($tok / $maxTok * 100) }}%"></div>
+                    </div>
+                    <span class="num small" style="width:70px; text-align:right">{{ $num($tok) }}</span>
+                </div>
+            @empty
+                <div class="text-secondary small">Chưa có dữ liệu token.</div>
+            @endforelse
+
+            <div class="small text-secondary mt-3 pt-2 border-top">
+                Đơn giá: <b class="num">${{ $t['pricing']['input_usd_per_1m'] }}</b> vào /
+                <b class="num">${{ $t['pricing']['output_usd_per_1m'] }}</b> ra (mỗi 1M token) ·
+                tỉ giá <b class="num">{{ $num($t['pricing']['usd_to_vnd']) }}đ</b>/$.
+                <span class="d-block">Đây là ước tính từ {{ $num($t['calls_with_tokens']) }} lượt gọi có ghi token — không phải hóa đơn chính thức.</span>
+            </div>
+        </x-card>
+    </div>
+
+    {{-- System counts --}}
+    <div class="col-12">
         <x-card title="Toàn bộ dữ liệu hệ thống" icon="bi-database">
             <div class="row g-3">
                 @foreach ([

@@ -95,6 +95,18 @@ return [
     'ai_timeout' => 60,
 
     /*
+    | Giá token AI — ước tính chi phí (report admin).
+    | Đơn giá USD trên 1 TRIỆU token (mặc định theo Gemini Flash; chỉnh theo model
+    | thực tế của bạn). Cost = prompt/1e6*input + completion/1e6*output.
+    | Đổi sang VND bằng usd_to_vnd. Đây là ƯỚC TÍNH, không phải hóa đơn chính thức.
+    */
+    'ai_pricing' => [
+        'input_usd_per_1m'  => (float) env('AI_PRICE_INPUT', 0.30),
+        'output_usd_per_1m' => (float) env('AI_PRICE_OUTPUT', 2.50),
+        'usd_to_vnd'        => (int) env('AI_USD_TO_VND', 25400),
+    ],
+
+    /*
     | Safety filter co ban cho noi dung AI (hoc sinh 6-12) — SPEC §3.8.
     | Lop chan THO; provider that thuong co safety rieng manh hon.
     | De rong o dev; production bo sung tu ngu nhay cam qua bien moi truong/DB.

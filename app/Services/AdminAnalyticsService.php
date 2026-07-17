@@ -33,9 +33,61 @@ class AdminAnalyticsService
         return array_merge($this->overview(), [
             'system' => $this->systemCounts(),
             'learning' => $this->learningStats(),
+            'tokens' => $this->tokenStats(),
             'top_students' => $this->topStudents(),
             'recent_payments' => $this->recentPayments(),
         ]);
+    }
+
+    /**
+     * Thong ke token + uoc tinh chi phi AI. Don gia tu config.
+     * Cost = prompt/1e6*input_usd + completion/1e6*output_usd.
+     */
+    public function tokenStats(): array
+    {
+        $p = config('hoctoan.ai_pricing');
+
+        $sum = fn ($query) => [
+            'prompt' => (int) (clone $query)->sum('prompt_tokens'),
+            'completion' => (int) (clone $query)->sum('completion_tokens'),
+            'total' => (int) (clone $query)->sum('total_tokens'),
+        ];
+
+        // Output tinh phi = total - prompt (bao gom ca token "thinking" cua model 2.5,
+        // von khong nam trong completion nhung van bi tinh phi nhu output).
+        $cost = function (array $t) use ($p) {
+            $output = max($t['completion'], $t['total'] - $t['prompt']);
+
+            return $t['prompt'] / 1e6 * $p['input_usd_per_1m']
+                + $output / 1e6 * $p['output_usd_per_1m'];
+        };
+
+        $allTime = $sum(AiLog::query());
+        $last30 = $sum(AiLog::where('created_at', '>=', now()->subDays(30)));
+
+        $costAllUsd = $cost($allTime);
+        $cost30Usd = $cost($last30);
+
+        // Token theo tinh nang (all time) — bo tinh nang chua co token.
+        $byFeature = AiLog::query()
+            ->selectRaw('feature, SUM(total_tokens) as t')
+            ->groupBy('feature')
+            ->havingRaw('SUM(total_tokens) > 0')
+            ->orderByDesc('t')
+            ->pluck('t', 'feature')
+            ->map(fn ($t) => (int) $t)->all();
+
+        return [
+            'all_time' => $allTime,
+            'last_30d' => $last30,
+            'cost_all_usd' => round($costAllUsd, 4),
+            'cost_all_vnd' => (int) round($costAllUsd * $p['usd_to_vnd']),
+            'cost_30d_usd' => round($cost30Usd, 4),
+            'cost_30d_vnd' => (int) round($cost30Usd * $p['usd_to_vnd']),
+            'by_feature' => $byFeature,
+            'pricing' => $p,
+            'calls_with_tokens' => AiLog::whereNotNull('total_tokens')->count(),
+        ];
     }
 
     /** Dem moi thuc the chinh — "toan bo thong tin". */

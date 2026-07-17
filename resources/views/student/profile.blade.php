@@ -43,11 +43,16 @@
     </x-card>
 
     {{-- Huy hieu --}}
-    <x-card title="Huy hiệu" icon="bi-award">
+    <x-card title="Huy hiệu" icon="bi-award" class="mb-4">
         <div id="pf-badges" class="d-flex flex-wrap gap-2">
             <span class="text-secondary small">Đang tải...</span>
         </div>
     </x-card>
+
+    {{-- Dang xuat --}}
+    <div class="text-center">
+        <x-logout class="btn btn-outline-danger" />
+    </div>
 </div>
 @endsection
 

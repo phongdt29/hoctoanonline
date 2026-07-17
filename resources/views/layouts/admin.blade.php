@@ -14,6 +14,7 @@
 
     <div class="d-flex align-items-center gap-2">
         @yield('topbar-chips')
+        <x-logout class="btn btn-sm btn-outline-primary" />
     </div>
 </nav>
 

@@ -218,6 +218,9 @@ class AiProviderService
         int $latencyMs,
         string $status,
     ): void {
+        // Trich so token tu usageMetadata cua Gemini (neu co) — de tinh chi phi.
+        $usage = $response['usageMetadata'] ?? [];
+
         AiLog::create([
             'provider_id' => $providerId,
             'student_id' => $studentId,
@@ -227,6 +230,9 @@ class AiProviderService
             'response_json' => $response,
             'latency_ms' => $latencyMs,
             'status' => $status,
+            'prompt_tokens' => $usage['promptTokenCount'] ?? null,
+            'completion_tokens' => $usage['candidatesTokenCount'] ?? null,
+            'total_tokens' => $usage['totalTokenCount'] ?? null,
         ]);
     }
 }

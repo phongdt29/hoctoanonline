@@ -32,15 +32,19 @@ class AiLog extends Model
     protected $fillable = [
         'provider_id', 'student_id', 'feature', 'request_json',
         'response_json', 'latency_ms', 'status',
+        'prompt_tokens', 'completion_tokens', 'total_tokens',
     ];
 
     protected function casts(): array
     {
         return [
-            'request_json'  => 'array',
-            'response_json' => 'array',
-            'latency_ms'    => 'integer',
-            'created_at'    => 'datetime',
+            'request_json'      => 'array',
+            'response_json'     => 'array',
+            'latency_ms'        => 'integer',
+            'prompt_tokens'     => 'integer',
+            'completion_tokens' => 'integer',
+            'total_tokens'      => 'integer',
+            'created_at'        => 'datetime',
         ];
     }
 
