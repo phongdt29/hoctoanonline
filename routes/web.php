@@ -91,6 +91,7 @@ Route::middleware(['auth', 'role:student'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
         Route::get('/curriculum', [CurriculumPageController::class, 'show'])->name('curriculum');
         Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
+        Route::get('/quiz/{quiz}', [\App\Http\Controllers\Student\QuizPageController::class, 'show'])->name('quiz.show');
 
         // Trang phu: giai bai, gia su, ca nhan (host UI + JS goi API)
         Route::get('/solver', [\App\Http\Controllers\Student\StudentPageController::class, 'solver'])->name('solver');

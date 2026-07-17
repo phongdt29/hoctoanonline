@@ -37,8 +37,7 @@
             <p class="text-secondary small mb-2">
                 Làm xong bài tập? Kiểm tra 15 phút để mở buổi tiếp theo.
             </p>
-            <a href="#" class="btn btn-primary btn-lg ht-tap"
-               data-quiz-start="{{ route('api.quizzes.start', $lesson->quiz) }}">
+            <a href="{{ route('quiz.show', $lesson->quiz) }}" class="btn btn-primary btn-lg ht-tap">
                 Vào quiz cuối buổi
             </a>
         </div>

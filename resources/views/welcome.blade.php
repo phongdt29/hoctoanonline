@@ -15,21 +15,40 @@
     .float-card { animation: ht-float 5s ease-in-out infinite; }
     @keyframes ht-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     @media (prefers-reduced-motion: reduce) { .float-card { animation: none; } }
+    /* Menu mobile mo ra: panel gon, nut full-width */
+    @media (max-width: 991.98px) {
+        #navMain { padding: .25rem .25rem .75rem; border-top: 1px solid var(--ht-line); margin-top: .5rem; }
+        #navMain .nav-link { padding: .55rem .75rem; border-radius: 12px; }
+        #navMain .btn { width: 100%; }
+    }
 </style>
 @endpush
 
 @section('body')
-{{-- Nav --}}
-<nav class="navbar navbar-expand-lg navbar-home sticky-top py-3">
+{{-- Nav — hamburger gom gon tren mobile, ngang tren desktop --}}
+<nav class="navbar navbar-expand-lg navbar-home sticky-top py-2">
     <div class="container">
         <x-brand size="md" class="navbar-brand" />
-        <div class="d-flex gap-2">
-            @auth
-                <a href="{{ route('home') }}" class="btn btn-primary ht-tap">Vào học</a>
-            @else
-                <a href="{{ route('login') }}" class="btn btn-outline-primary ht-tap">Đăng nhập</a>
-                <a href="{{ route('register') }}" class="btn btn-primary ht-tap">Đăng ký miễn phí</a>
-            @endauth
+
+        <button class="navbar-toggler border-0 shadow-none p-1" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navMain"
+                aria-controls="navMain" aria-expanded="false" aria-label="Mở menu">
+            <i class="bi bi-list" style="font-size:1.8rem; color:var(--ht-primary)"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMain">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1 mt-2 mt-lg-0">
+                <li class="nav-item"><a class="nav-link px-3" href="#tinh-nang">Tính năng</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="#cach-hoat-dong">Cách hoạt động</a></li>
+            </ul>
+            <div class="d-flex flex-column flex-lg-row gap-2 ms-lg-3 mt-3 mt-lg-0">
+                @auth
+                    <a href="{{ route('home') }}" class="btn btn-primary ht-tap">Vào học</a>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-outline-primary ht-tap">Đăng nhập</a>
+                    <a href="{{ route('register') }}" class="btn btn-primary ht-tap">Đăng ký miễn phí</a>
+                @endauth
+            </div>
         </div>
     </div>
 </nav>
@@ -94,7 +113,7 @@
 </header>
 
 {{-- Tính năng --}}
-<section class="py-5">
+<section id="tinh-nang" class="py-5">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="h3 fw-bold">Mọi thứ một học sinh cần để tiến bộ thật</h2>
