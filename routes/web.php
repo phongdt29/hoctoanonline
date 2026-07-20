@@ -115,8 +115,12 @@ Route::middleware(['auth', 'role:parent'])->group(function () {
 
 // Giao vien
 Route::middleware(['auth', 'role:teacher'])->group(function () {
-    Route::view('/teacher/classes', 'stub', ['title' => 'Lớp của tôi', 'ticket' => 'T1'])
-        ->name('teacher.classes');
+    $tc = \App\Http\Controllers\Teacher\TeacherController::class;
+    Route::get('/teacher/classes', [$tc, 'classes'])->name('teacher.classes');
+    Route::get('/teacher/classes/{class}', [$tc, 'show'])->name('teacher.class');
+    Route::post('/teacher/classes/{class}/assignments', [$tc, 'storeAssignment'])->name('teacher.assignment.store');
+    Route::get('/teacher/assignments/{assignment}', [$tc, 'submissions'])->name('teacher.assignment');
+    Route::post('/teacher/submissions/{submission}/grade', [$tc, 'grade'])->name('teacher.grade');
 });
 
 // Admin + staff
