@@ -85,6 +85,11 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/assessment/{assessment}/result', [AssessmentPageController::class, 'result'])
         ->name('assessment.result');
 
+    // Bo qua bai test (sinh lo trinh demo) — CHI dev/test, khong dang ky o production.
+    if (! app()->environment('production')) {
+        Route::post('/assessment/skip', [AssessmentPageController::class, 'skip'])->name('assessment.skip');
+    }
+
     // `assessed`: chan vao khi chua lam bai danh gia — giao trinh sinh tu ket qua
     // phan loai, chua co thi khong co gi de hien.
     Route::middleware('assessed')->group(function () {

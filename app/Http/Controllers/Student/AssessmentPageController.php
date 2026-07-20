@@ -33,6 +33,20 @@ class AssessmentPageController extends Controller
         ]);
     }
 
+    /**
+     * POST /assessment/skip — BO QUA bai test, sinh lo trinh demo (khong AI).
+     * CHI dev/test (route chi dang ky o local). Giup kiem thu cac tinh nang khac.
+     */
+    public function skip(\App\Services\DemoCurriculumService $demo): RedirectResponse
+    {
+        $student = request()->user()->student;
+
+        $demo->generate($student);
+
+        return redirect()->route('dashboard')
+            ->with('status', 'Đã tạo lộ trình demo. Bạn có thể thử học, làm quiz, hỏi gia sư ngay.');
+    }
+
     /** GET /assessment/{assessment}/result — trang ket qua. */
     public function result(Assessment $assessment): View|RedirectResponse
     {

@@ -25,6 +25,22 @@
                     <li>· Bài tự lưu, lỡ thoát ra vẫn làm tiếp được</li>
                 </ul>
                 <button id="asm-start" class="btn btn-primary btn-lg ht-tap">Bắt đầu làm bài</button>
+
+                {{-- Bo qua bai test — CHI moi truong dev/test, de kiem thu tinh nang khac --}}
+                @if (! app()->environment('production') && \Illuminate\Support\Facades\Route::has('assessment.skip'))
+                    <div class="mt-4 pt-3 border-top">
+                        <p class="text-secondary small mb-2"><i class="bi bi-flask"></i> Chế độ kiểm thử</p>
+                        <form method="POST" action="{{ route('assessment.skip') }}">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-outline-secondary ht-tap">
+                                <i class="bi bi-fast-forward"></i> Bỏ qua bài test (tạo lộ trình demo)
+                            </button>
+                        </form>
+                        <p class="text-secondary mt-2 mb-0" style="font-size:11px">
+                            Vào thẳng phần học để kiểm tra bài học, quiz, gia sư — không cần làm bài test.
+                        </p>
+                    </div>
+                @endif
             </div>
         </div>
 
