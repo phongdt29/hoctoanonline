@@ -25,17 +25,34 @@
         </form>
     </x-card>
 @else
-    {{-- Chon con --}}
-    @if ($children->count() > 1)
-        <div class="mb-3 d-flex gap-2 flex-wrap">
-            @foreach ($children as $child)
-                <a href="{{ route('parent.dashboard', ['child' => $child->id]) }}"
-                   class="btn btn-sm {{ $selected?->id === $child->id ? 'btn-primary' : 'btn-outline-primary' }}">
-                    {{ $child->full_name }}
-                </a>
-            @endforeach
-        </div>
-    @endif
+    {{-- Chon con + nut them con (luon co) --}}
+    <div class="mb-3 d-flex gap-2 flex-wrap align-items-center">
+        @foreach ($children as $child)
+            <a href="{{ route('parent.dashboard', ['child' => $child->id]) }}"
+               class="btn btn-sm {{ $selected?->id === $child->id ? 'btn-primary' : 'btn-outline-primary' }}">
+                {{ $child->full_name }}
+            </a>
+        @endforeach
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#addChild">
+            <i class="bi bi-plus-lg"></i> Thêm con
+        </button>
+    </div>
+
+    {{-- Form them con (bang ma moi). Tu mo khi co loi nhap ma. --}}
+    <div class="collapse mb-3 {{ $errors->has('invite_code') ? 'show' : '' }}" id="addChild">
+        <x-card>
+            <p class="text-secondary small mb-2">Nhập mã mời của con (xem trong <b>Cá nhân</b> ở tài khoản của con) để liên kết thêm.</p>
+            <form method="POST" action="{{ route('parent.link-student') }}" class="row g-2">
+                @csrf
+                <div class="col">
+                    <input name="invite_code" class="form-control @error('invite_code') is-invalid @enderror"
+                           placeholder="VD: HT000002" value="{{ old('invite_code') }}">
+                    @error('invite_code') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+                <div class="col-auto"><button class="btn btn-primary">Liên kết</button></div>
+            </form>
+        </x-card>
+    </div>
 
     <div class="row g-4">
         {{-- Khoi 0: den tin hieu risk (dau, col-12) --}}
