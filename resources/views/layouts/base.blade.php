@@ -19,7 +19,7 @@
     {{-- 1. Fonts (subset vietnamese) --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 
     {{-- 2. Bootstrap 5.3 + Bootstrap Icons --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -42,6 +42,23 @@
     {{-- Cuoi body, dung thu tu: jQuery -> bootstrap bundle -> MathJax -> app.js --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- Cau hinh MathJax: PHAI dat truoc khi script tex-mml nap.
+         Cho phep ca $...$ (soan toan tieng Viet quen dung) lan \(...\). --}}
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            },
+            options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] },
+        };
+        // Helper: typeset lai 1 vung (dung cho xem truoc khi soan bai).
+        window.htTypeset = function (el) {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                return window.MathJax.typesetPromise(el ? [el] : undefined);
+            }
+        };
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
     <script src="{{ asset('js/app.js') }}?v={{ filemtime(public_path('js/app.js')) }}"></script>
 

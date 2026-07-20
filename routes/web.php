@@ -141,6 +141,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.providers.destroy');
     Route::post('/admin/ai-providers/{provider}/test', [\App\Http\Controllers\Admin\ProviderController::class, 'test'])
         ->name('admin.providers.test');
+
+    // Soan bai — sua noi dung lesson + cong thuc toan.
+    Route::get('/admin/lessons', [\App\Http\Controllers\Admin\LessonController::class, 'index'])
+        ->name('admin.lessons');
+    Route::get('/admin/lessons/{lesson}/edit', [\App\Http\Controllers\Admin\LessonController::class, 'edit'])
+        ->name('admin.lessons.edit');
+    Route::put('/admin/lessons/{lesson}', [\App\Http\Controllers\Admin\LessonController::class, 'update'])
+        ->name('admin.lessons.update');
 });
 
 /*

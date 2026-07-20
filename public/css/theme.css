@@ -44,7 +44,8 @@
 
 /* ===== 2. MAP BOOTSTRAP VARS ===== */
 :root {
-    --bs-body-font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    --bs-body-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    letter-spacing: -.006em;
     --bs-body-bg: var(--ht-bg);
     --bs-body-color: var(--ht-ink);
     --bs-border-color: var(--ht-line);
