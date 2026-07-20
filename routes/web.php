@@ -129,6 +129,20 @@ Route::middleware(['auth', 'role:admin,staff'])->group(function () {
         ->name('admin.home');
 });
 
+// Admin thuc — quan ly AI provider (key nhay cam, khong cho staff).
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/ai-providers', [\App\Http\Controllers\Admin\ProviderController::class, 'index'])
+        ->name('admin.providers');
+    Route::post('/admin/ai-providers', [\App\Http\Controllers\Admin\ProviderController::class, 'store'])
+        ->name('admin.providers.store');
+    Route::put('/admin/ai-providers/{provider}', [\App\Http\Controllers\Admin\ProviderController::class, 'update'])
+        ->name('admin.providers.update');
+    Route::delete('/admin/ai-providers/{provider}', [\App\Http\Controllers\Admin\ProviderController::class, 'destroy'])
+        ->name('admin.providers.destroy');
+    Route::post('/admin/ai-providers/{provider}/test', [\App\Http\Controllers\Admin\ProviderController::class, 'test'])
+        ->name('admin.providers.test');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Style guide (ticket F5)

@@ -1,7 +1,7 @@
 {{--
-    Layout hoc sinh (UI-DESIGN-SPEC §4).
-    Desktop: sidebar co dinh 92px (nav-pills doc) + noi dung.
-    Mobile <992px: an sidebar, hien bottom tab 5 muc.
+    Layout hoc sinh. Header dong bo voi teacher/admin: top navbar co logo MathAI.
+    Desktop: top navbar + sidebar doc 92px + noi dung.
+    Mobile <992px: top navbar + bottom tab.
 --}}
 @extends('layouts.base')
 
@@ -19,6 +19,15 @@
 @endphp
 
 @section('body')
+{{-- Top navbar — dong bo voi teacher/admin --}}
+<nav class="navbar navbar-expand glass sticky-top border-bottom px-3">
+    <x-brand size="sm" class="navbar-brand mb-0" />
+    <div class="d-flex align-items-center flex-wrap gap-2 ms-auto">
+        @yield('topbar-chips')
+        <x-logout class="btn btn-sm btn-outline-primary" />
+    </div>
+</nav>
+
 <div class="container-xxl py-3 py-lg-4">
     <div class="row g-4">
 
@@ -33,29 +42,14 @@
                         <span style="font-size:11px">{{ $item['label'] }}</span>
                     </a>
                 @endforeach
-
-                {{-- Dang xuat --}}
-                <form method="POST" action="{{ route('logout') }}" class="mt-2 pt-2 border-top">
-                    @csrf
-                    <button type="submit" class="nav-link ht-tap px-1 py-2 text-secondary w-100 border-0 bg-transparent">
-                        <i class="bi bi-box-arrow-right d-block fs-5 mb-1"></i>
-                        <span style="font-size:11px">Đăng xuất</span>
-                    </button>
-                </form>
             </nav>
         </aside>
 
         <div class="col">
-            {{-- Topbar: chao + ngay | chips streak, diem, avatar gia su --}}
-            <header class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-                <div>
-                    <h1 class="h5 mb-0">@yield('greeting', 'Chào bạn')</h1>
-                    <p class="text-secondary small mb-0">{{ now()->timezone('Asia/Ho_Chi_Minh')->translatedFormat('l, d/m/Y') }}</p>
-                </div>
-
-                <div class="d-flex align-items-center flex-wrap gap-2">
-                    @yield('topbar-chips')
-                </div>
+            {{-- Loi chao + ngay --}}
+            <header class="mb-4">
+                <h1 class="h5 mb-0">@yield('greeting', 'Chào bạn')</h1>
+                <p class="text-secondary small mb-0">{{ now()->timezone('Asia/Ho_Chi_Minh')->translatedFormat('l, d/m/Y') }}</p>
             </header>
 
             @yield('content')

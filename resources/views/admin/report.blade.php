@@ -4,7 +4,9 @@
 @section('page-title', 'Báo cáo tổng quan hệ thống')
 
 @section('page-actions')
-    <a href="{{ url('/admin/ai-providers') }}" class="btn btn-sm btn-outline-primary d-none">AI Providers</a>
+    @if (auth()->user()->role === 'admin')
+        <a href="{{ route('admin.providers') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-hdd-network"></i> Nhà cung cấp AI</a>
+    @endif
     <button onclick="window.print()" class="btn btn-sm btn-outline-primary"><i class="bi bi-printer"></i> In</button>
 @endsection
 

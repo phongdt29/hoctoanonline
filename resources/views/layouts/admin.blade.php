@@ -5,7 +5,7 @@
 @extends('layouts.base')
 
 @section('body')
-<nav class="navbar navbar-expand bg-white border-bottom px-3">
+<nav class="navbar navbar-expand glass sticky-top border-bottom px-3">
     <x-brand size="sm" class="navbar-brand mb-0" />
 
     <div class="navbar-nav me-auto">
