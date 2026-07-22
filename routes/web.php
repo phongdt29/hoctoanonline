@@ -157,6 +157,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.lessons.bulk');
     Route::post('/admin/lessons/{lesson}/similar', [\App\Http\Controllers\Admin\LessonController::class, 'similar'])
         ->name('admin.lessons.similar');
+
+    // Lên giáo trình bằng AI — thu vien giao trinh mau.
+    Route::get('/admin/syllabi', [\App\Http\Controllers\Admin\SyllabusController::class, 'index'])
+        ->name('admin.syllabi');
+    Route::post('/admin/syllabi', [\App\Http\Controllers\Admin\SyllabusController::class, 'store'])
+        ->name('admin.syllabi.store');
+    Route::get('/admin/syllabi/{syllabus}', [\App\Http\Controllers\Admin\SyllabusController::class, 'show'])
+        ->name('admin.syllabi.show');
+    Route::post('/admin/syllabi/{syllabus}/retry', [\App\Http\Controllers\Admin\SyllabusController::class, 'retry'])
+        ->name('admin.syllabi.retry');
+    Route::delete('/admin/syllabi/{syllabus}', [\App\Http\Controllers\Admin\SyllabusController::class, 'destroy'])
+        ->name('admin.syllabi.destroy');
 });
 
 /*

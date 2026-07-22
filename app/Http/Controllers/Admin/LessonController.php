@@ -73,7 +73,7 @@ class LessonController extends Controller
     {
         $data = $request->validate([
             'topic'      => ['required', 'string', 'max:200'],
-            'grade'      => ['required', 'integer', 'min:6', 'max:12'],
+            'grade'      => ['required', 'integer', 'min:1', 'max:12'],
             'difficulty' => ['required', 'in:easy,medium,hard'],
             'count'      => ['required', 'integer', 'min:1', 'max:10'],
         ]);

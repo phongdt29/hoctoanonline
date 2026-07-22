@@ -70,7 +70,7 @@
                             <label class="form-label small fw-semibold" for="grade">Khối lớp</label>
                             <select id="grade" name="grade" class="form-select @error('grade') is-invalid @enderror" required>
                                 <option value="">—</option>
-                                @foreach (range(6, 12) as $g)
+                                @foreach (range(1, 12) as $g)
                                     <option value="{{ $g }}" @selected(old('grade', $student->grade) == $g)>Lớp {{ $g }}</option>
                                 @endforeach
                             </select>
