@@ -50,7 +50,8 @@
                 inlineMath: [['\\(', '\\)'], ['$', '$']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']],
             },
-            options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] },
+            // math-field: MathLive tu render, MathJax phai bo qua de khong xung dot.
+            options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'math-field'] },
         };
         // Helper: typeset lai 1 vung (dung cho xem truoc khi soan bai).
         window.htTypeset = function (el) {

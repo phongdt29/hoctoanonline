@@ -9,13 +9,13 @@
 :root {
     /* Mau chu dao — Blade override theo students.favorite_color.
        --ht-primary-rgb BAT BUOC cho .text-primary/.bg-primary opacity + gradient/shadow. */
-    --ht-primary: #5B4DFF;
-    --ht-primary-rgb: 91, 77, 255;
+    --ht-primary: #2563EB;
+    --ht-primary-rgb: 37, 99, 235;
 
     /* Dan xuat bang color-mix -> ca nhan hoa lan het moi trang thai. */
     --ht-primary-ink: color-mix(in srgb, var(--ht-primary) 76%, #000);
     --ht-primary-soft: color-mix(in srgb, var(--ht-primary) 10%, #fff);
-    --ht-primary-2: color-mix(in srgb, var(--ht-primary) 62%, #C86BFF);   /* diem cuoi gradient */
+    --ht-primary-2: color-mix(in srgb, var(--ht-primary) 62%, #38BDF8);   /* diem cuoi gradient (xanh trong) */
     --ht-gradient: linear-gradient(135deg, var(--ht-primary) 0%, var(--ht-primary-2) 100%);
 
     /* Neutrals — am ap, hien dai */

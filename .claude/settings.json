@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -f tests/Feature/Admin/DbgTest.php)",
+      "Bash(php -r ' *)",
+      "Bash(sed -i 's|^        ->assertRedirect\\(route\\(.admin.lessons.edit., \\\\$lesson\\)\\);$|        ->assertRedirect\\(route\\(\"admin.lessons.edit\", $lesson\\)\\);\\\\n    dump\\(\"ERR: \".\\(session\\(\"error\"\\) ?? \"none\"\\), \"LOGS: \".\\\\\\\\App\\\\\\\\Models\\\\\\\\AiLog::count\\(\\), \"RESP: \".mb_substr\\(\\(string\\)\\\\\\\\App\\\\\\\\Models\\\\\\\\AiLog::latest\\(\"id\"\\)->first\\(\\)?->response_json,0,400\\)\\);|' tests/Feature/Admin/SoanDeTest.php)",
+      "Bash(vendor/bin/pest tests/Feature/Admin/SoanDeTest.php --filter=\"AI sinh de\")"
+    ]
+  }
+}

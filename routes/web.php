@@ -149,6 +149,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.lessons.edit');
     Route::put('/admin/lessons/{lesson}', [\App\Http\Controllers\Admin\LessonController::class, 'update'])
         ->name('admin.lessons.update');
+    Route::post('/admin/lessons/{lesson}/ai-generate', [\App\Http\Controllers\Admin\LessonController::class, 'aiGenerate'])
+        ->name('admin.lessons.ai-generate');
+    Route::post('/admin/lessons/{lesson}/ocr', [\App\Http\Controllers\Admin\LessonController::class, 'ocr'])
+        ->name('admin.lessons.ocr');
+    Route::post('/admin/lessons/{lesson}/bulk', [\App\Http\Controllers\Admin\LessonController::class, 'bulk'])
+        ->name('admin.lessons.bulk');
+    Route::post('/admin/lessons/{lesson}/similar', [\App\Http\Controllers\Admin\LessonController::class, 'similar'])
+        ->name('admin.lessons.similar');
 });
 
 /*

@@ -143,10 +143,10 @@ return [
     | với opacity — thiếu nó thì đổi màu sẽ không lan hết (DoD F5).
     */
     'personalization' => [
-        'default_color' => '#5B4DFF',
+        'default_color' => '#2563EB',
         'colors' => [
-            ['name' => 'Tím mực',    'hex' => '#5B4DFF', 'rgb' => '91,77,255'],
             ['name' => 'Xanh dương', 'hex' => '#2563EB', 'rgb' => '37,99,235'],
+            ['name' => 'Tím mực',    'hex' => '#5B4DFF', 'rgb' => '91,77,255'],
             ['name' => 'Xanh ngọc',  'hex' => '#0E7490', 'rgb' => '14,116,144'],
             ['name' => 'Xanh lá',    'hex' => '#047857', 'rgb' => '4,120,87'],
             ['name' => 'Xanh rêu',   'hex' => '#4D7C0F', 'rgb' => '77,124,15'],

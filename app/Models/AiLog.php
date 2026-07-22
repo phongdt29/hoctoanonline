@@ -28,6 +28,7 @@ class AiLog extends Model
     public const FEATURE_TUTOR_CHAT      = 'tutor_chat';
     public const FEATURE_SOLVER          = 'solver';
     public const FEATURE_RECOMMENDATION  = 'recommendation';
+    public const FEATURE_AUTHORING       = 'authoring';    // soan de: AI sinh de + OCR anh
 
     protected $fillable = [
         'provider_id', 'student_id', 'feature', 'request_json',
