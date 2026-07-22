@@ -29,7 +29,7 @@
                     <div class="col-6">
                         <label class="form-label small fw-semibold">Lớp</label>
                         <select name="grade" class="form-select">
-                            @for ($g = 6; $g <= 12; $g++)
+                            @for ($g = 1; $g <= 12; $g++)
                                 <option value="{{ $g }}" @selected(old('grade', 9) == $g)>Lớp {{ $g }}</option>
                             @endfor
                         </select>

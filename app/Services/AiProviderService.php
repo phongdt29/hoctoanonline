@@ -189,7 +189,7 @@ class AiProviderService
     }
 
     /**
-     * Safety filter toi gian cho noi dung hop lua tuoi (hoc sinh 6-12).
+     * Safety filter toi gian cho noi dung hop lua tuoi (hoc sinh 1-12).
      * Day la lop chan CO BAN — provider that thuong co safety rieng.
      * Danh sach tu kho o config de mo rong ma khong sua code.
      */

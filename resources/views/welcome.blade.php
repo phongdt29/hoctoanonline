@@ -67,7 +67,7 @@
                     Học toán theo <span class="ht-text-grad">lộ trình riêng</span> của chính bạn
                 </h1>
                 <p class="fs-5 text-secondary mb-4" style="max-width:34rem">
-                    A.I đánh giá đúng năng lực thật, xây giáo trình riêng cho từng học sinh lớp 6–12,
+                    A.I đánh giá đúng năng lực thật, xây giáo trình riêng cho từng học sinh lớp 1–12,
                     và đồng hành từng buổi như một gia sư của riêng em.
                 </p>
                 <div class="d-flex flex-column flex-sm-row flex-wrap gap-2 mb-4">

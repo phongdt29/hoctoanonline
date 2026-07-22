@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('syllabi', function (Blueprint $table) {
             $table->id();
             $table->string('title', 200);
-            $table->unsignedTinyInteger('grade');            // lop 6-12
+            $table->unsignedTinyInteger('grade');            // lop 1-12 (ho tro ca tieu hoc)
             $table->string('topic', 200)->nullable();        // chu de chinh
             $table->text('goal')->nullable();                // muc tieu
             $table->unsignedTinyInteger('planned_sessions')->default(0);

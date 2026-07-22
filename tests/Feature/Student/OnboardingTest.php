@@ -67,13 +67,21 @@ it('DoD C2: thieu field -> 422 voi danh sach loi', function () {
     expect($user->student->fresh()->status)->toBe(Student::STATUS_REGISTERED);
 });
 
-it('grade ngoai 6..12 bi tu choi', function (int $grade) {
+it('grade ngoai 1..12 bi tu choi', function (int $grade) {
     $user = newStudent();
 
     $this->actingAs($user)
         ->post('/onboarding', validPayload(['grade' => $grade]))
         ->assertSessionHasErrors('grade');
-})->with([5, 13, 0]);
+})->with([13, 0, -1]);
+
+it('grade tieu hoc (1..5) duoc chap nhan', function (int $grade) {
+    $user = newStudent();
+
+    $this->actingAs($user)
+        ->post('/onboarding', validPayload(['grade' => $grade]))
+        ->assertSessionDoesntHaveErrors('grade');
+})->with([1, 3, 5]);
 
 it('math_gpa ngoai 0..10 bi tu choi', function (float $gpa) {
     $user = newStudent();
