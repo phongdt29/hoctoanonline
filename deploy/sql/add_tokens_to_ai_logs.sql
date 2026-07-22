@@ -16,11 +16,14 @@ ALTER TABLE `ai_logs`
 
 -- 2. Ghi nhan migration da chay -> `php artisan migrate` sau nay KHONG chay lai
 --    (neu chay lai se loi "Duplicate column name").
---    Subquery long de MySQL cho phep doc `migrations` khi dang INSERT vao no.
+--    `newrow` la 1 dong (khong tong hop) nen WHERE NOT EXISTS loc dung -> chay lai
+--    khong chen trung. Cac lan doc `migrations` deu boc trong subquery de tranh loi 1093.
 INSERT INTO `migrations` (`migration`, `batch`)
-SELECT '2026_07_17_100001_add_tokens_to_ai_logs',
-       COALESCE(MAX(`batch`), 0) + 1
-FROM (SELECT `batch` FROM `migrations`) AS m
+SELECT `newrow`.`migration`, `newrow`.`batch`
+FROM (
+    SELECT '2026_07_17_100001_add_tokens_to_ai_logs' AS `migration`,
+           (SELECT COALESCE(MAX(`batch`), 0) + 1 FROM (SELECT `batch` FROM `migrations`) AS b) AS `batch`
+) AS `newrow`
 WHERE NOT EXISTS (
     SELECT 1 FROM (SELECT `migration` FROM `migrations`) AS m2
     WHERE m2.`migration` = '2026_07_17_100001_add_tokens_to_ai_logs'
