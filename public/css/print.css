@@ -1,0 +1,55 @@
+/*
+ * print.css — chi ap dung khi IN (media="print").
+ * Muc tieu: an giao dien (navbar/sidebar/nut), chi in noi dung sach se,
+ * cong thuc MathJax van hien (vi in tu trinh duyet nen JS da chay xong).
+ */
+
+/* An cac phan khong thuoc noi dung tai lieu.
+   KHONG an [data-bs-toggle] vi nut accordion chinh la TIEU DE chuong. */
+nav.navbar,
+aside,
+.navbar.fixed-bottom,
+.btn,
+form,
+.accordion-button::after,
+.no-print {
+    display: none !important;
+}
+
+/* Bo mau nen/bong de tiet kiem muc, chu den ro rang */
+* {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    color: #000 !important;
+    background: #fff !important;
+}
+
+body { font-size: 12pt; }
+
+.card, .ht-card, [class*="shadow"] {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0 .5rem 0 !important;
+}
+
+/* Accordion: in het (bo qua trang thai gap/mo) */
+.accordion-collapse { display: block !important; height: auto !important; visibility: visible !important; }
+.accordion-button { padding-left: 0 !important; font-weight: 700; }
+.accordion-item { border: none !important; border-bottom: 1px solid #ccc !important; }
+
+/* Ngat trang: moi chuong bat dau trang moi, khong cat doi 1 bai */
+.accordion-item { break-before: page; page-break-before: always; }
+.accordion-item:first-of-type { break-before: auto; page-break-before: auto; }
+.ex-row, .lesson-theory, .border { break-inside: avoid; page-break-inside: avoid; }
+
+/* Badge/nhan do kho: vien mong cho de doc khi in trang den trang */
+.badge { border: 1px solid #999 !important; padding: 1px 6px !important; }
+
+/* MathJax: dam bao cong thuc khong bi cat */
+mjx-container { break-inside: avoid; }
+
+/* Tieu de trang in */
+.print-title { display: block !important; font-size: 16pt; font-weight: 800; margin-bottom: .25rem; }
+.print-meta  { display: block !important; font-size: 10pt; margin-bottom: 1rem; }
+
+@page { margin: 1.6cm 1.4cm; }

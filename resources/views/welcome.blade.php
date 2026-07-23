@@ -39,6 +39,7 @@
         <div class="collapse navbar-collapse" id="navMain">
             <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1 mt-2 mt-lg-0">
                 <li class="nav-item"><a class="nav-link px-3" href="#tinh-nang">Tính năng</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="#cho-ai">Dành cho ai</a></li>
                 <li class="nav-item"><a class="nav-link px-3" href="#cach-hoat-dong">Cách hoạt động</a></li>
             </ul>
             <div class="d-flex flex-column flex-lg-row gap-2 ms-lg-3 mt-3 mt-lg-0">
@@ -134,6 +135,64 @@
                             <div class="ht-ico mb-3"><i class="bi {{ $icon }}"></i></div>
                             <h3 class="h6 fw-bold">{{ $title }}</h3>
                             <p class="text-secondary small mb-0">{{ $desc }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- Danh sach tinh nang day du — chia theo doi tuong --}}
+<section id="cho-ai" class="py-5" style="background:var(--ht-bg)">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="h3 fw-bold">Đầy đủ tính năng cho cả nhà và nhà trường</h2>
+            <p class="text-secondary">Một nền tảng — học sinh học, phụ huynh theo dõi, giáo viên soạn giảng.</p>
+        </div>
+        <div class="row g-4">
+            @foreach ([
+                ['bi-mortarboard', 'Học sinh', [
+                    'Bài kiểm tra đầu vào chấm bằng A.I',
+                    'Giáo trình cá nhân hoá 4 giai đoạn (lớp 1–12)',
+                    'Học theo buổi: lý thuyết · bài tập · quiz',
+                    'Gia sư A.I hỏi đáp, giải từng bước',
+                    'Giải bài từ ảnh (chụp đề toán)',
+                    'Điểm thưởng, huy hiệu, chuỗi ngày học',
+                    'Làm đề trắc nghiệm, chấm điểm ngay',
+                ]],
+                ['bi-people', 'Phụ huynh', [
+                    'Theo dõi thời gian học thật của con',
+                    'Đèn tín hiệu xanh / vàng / đỏ dễ hiểu',
+                    'Cảnh báo sớm khi con sa sút',
+                    'Liên kết nhiều con bằng mã mời',
+                    'Báo cáo tiến độ định kỳ',
+                    'Đồng hành mà không cần rành toán',
+                ]],
+                ['bi-easel', 'Giáo viên & Nhà trường', [
+                    'Soạn bài & soạn đề bằng A.I',
+                    'Bàn phím công thức toán, chèn LaTeX',
+                    'Tạo đề trắc nghiệm nhiều mã đề + chấm tự động',
+                    'Lên giáo trình bằng A.I, gán cho học sinh',
+                    'In / xuất PDF tài liệu, đề, đáp án',
+                    'Quản lý lớp, giao & chấm bài tập',
+                ]],
+            ] as [$icon, $group, $items])
+                <div class="col-md-6 col-lg-4">
+                    <div class="card ht-hover h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div class="ht-ico"><i class="bi {{ $icon }}"></i></div>
+                                <h3 class="h5 fw-bold mb-0">{{ $group }}</h3>
+                            </div>
+                            <ul class="list-unstyled mb-0 d-grid gap-2">
+                                @foreach ($items as $item)
+                                    <li class="d-flex gap-2 small">
+                                        <i class="bi bi-check-circle-fill" style="color:var(--ht-primary)"></i>
+                                        <span class="text-secondary">{{ $item }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
                     </div>
                 </div>

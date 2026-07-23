@@ -7,6 +7,14 @@
 @section('content')
 <div class="mx-auto" style="max-width:760px">
 
+    {{-- Tieu de + nut in (nut an khi in) --}}
+    <div class="print-title d-none">{{ $lesson->title }}</div>
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" onclick="window.print()" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-printer"></i> In bài học
+        </button>
+    </div>
+
     {{-- Ly thuyet --}}
     <x-card title="Lý thuyết" icon="bi-book" class="mb-4">
         <div class="lesson-theory">{!! nl2br(e($lesson->theory_content)) !!}</div>

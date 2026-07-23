@@ -167,8 +167,26 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.syllabi.show');
     Route::post('/admin/syllabi/{syllabus}/retry', [\App\Http\Controllers\Admin\SyllabusController::class, 'retry'])
         ->name('admin.syllabi.retry');
+    Route::post('/admin/syllabi/{syllabus}/assign', [\App\Http\Controllers\Admin\SyllabusController::class, 'assign'])
+        ->name('admin.syllabi.assign');
     Route::delete('/admin/syllabi/{syllabus}', [\App\Http\Controllers\Admin\SyllabusController::class, 'destroy'])
         ->name('admin.syllabi.destroy');
+
+    // De thi trac nghiem
+    Route::get('/admin/exams', [\App\Http\Controllers\Admin\ExamController::class, 'index'])
+        ->name('admin.exams');
+    Route::post('/admin/exams', [\App\Http\Controllers\Admin\ExamController::class, 'store'])
+        ->name('admin.exams.store');
+    Route::get('/admin/exams/{exam}', [\App\Http\Controllers\Admin\ExamController::class, 'show'])
+        ->name('admin.exams.show');
+    Route::get('/admin/exams/{exam}/print', [\App\Http\Controllers\Admin\ExamController::class, 'print'])
+        ->name('admin.exams.print');
+    Route::post('/admin/exams/{exam}/grade', [\App\Http\Controllers\Admin\ExamController::class, 'grade'])
+        ->name('admin.exams.grade');
+    Route::post('/admin/exams/{exam}/retry', [\App\Http\Controllers\Admin\ExamController::class, 'retry'])
+        ->name('admin.exams.retry');
+    Route::delete('/admin/exams/{exam}', [\App\Http\Controllers\Admin\ExamController::class, 'destroy'])
+        ->name('admin.exams.destroy');
 });
 
 /*

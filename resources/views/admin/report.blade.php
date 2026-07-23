@@ -6,6 +6,7 @@
 @section('page-actions')
     @if (auth()->user()->role === 'admin')
         <a href="{{ route('admin.syllabi') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-journal-richtext"></i> Giáo trình AI</a>
+        <a href="{{ route('admin.exams') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-ui-checks"></i> Đề thi</a>
         <a href="{{ route('admin.lessons') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-journal-text"></i> Soạn bài</a>
         <a href="{{ route('admin.providers') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-hdd-network"></i> Nhà cung cấp AI</a>
     @endif

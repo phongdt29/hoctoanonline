@@ -116,6 +116,7 @@ class AuthoringService
             - Công thức viết bằng LaTeX giữa \$...\$ (vd \$x^2+1\$).
             - difficulty = "{$difficulty}" cho tất cả các câu.
             - Nội dung tiếng Việt, không lặp lại y hệt bài mẫu.
+            - TỰ GIẢI lại mỗi bài để chắc chắn "answer" khớp đúng với đề.
 
             Trả về JSON đúng schema (mảng exercises).
             TXT;
@@ -181,6 +182,7 @@ class AuthoringService
             - Mọi công thức toán viết bằng LaTeX, đặt giữa \$...\$ (vd \$x^2+1\$), công thức riêng dòng dùng \$\$...\$\$.
             - Nội dung bằng tiếng Việt, phù hợp chương trình lớp {$grade}.
             - Đa dạng, không lặp lại đề.
+            - TỰ GIẢI lại mỗi bài để chắc chắn "answer" khớp đúng với đề (kiểm tra kỹ phép tính trước khi trả lời).
 
             Trả về JSON đúng schema (mảng exercises).
             TXT;

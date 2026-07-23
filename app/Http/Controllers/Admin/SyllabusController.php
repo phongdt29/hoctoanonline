@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\GenerateSyllabusJob;
+use App\Models\Student;
 use App\Models\Syllabus;
+use App\Services\AssignSyllabusService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -53,7 +55,33 @@ class SyllabusController extends Controller
 
     public function show(Syllabus $syllabus): View
     {
-        return view('admin.syllabus', ['s' => $syllabus]);
+        // Danh sach hoc sinh de gan (uu tien cung khoi lop len dau).
+        $students = $syllabus->isReady()
+            ? Student::orderByRaw('grade = ? DESC', [$syllabus->grade])
+                ->orderBy('grade')->orderBy('full_name')
+                ->get(['id', 'full_name', 'grade'])
+            : collect();
+
+        return view('admin.syllabus', ['s' => $syllabus, 'students' => $students]);
+    }
+
+    /** Gan giao trinh cho 1 hoc sinh (clone thanh lo trinh that). */
+    public function assign(Request $request, Syllabus $syllabus, AssignSyllabusService $service): RedirectResponse
+    {
+        if (! $syllabus->isReady()) {
+            return back()->with('error', 'Giáo trình chưa sẵn sàng để gán.');
+        }
+
+        $data = $request->validate([
+            'student_id' => ['required', 'integer', 'exists:students,id'],
+        ]);
+
+        $student = Student::findOrFail($data['student_id']);
+        $curriculum = $service->assign($syllabus, $student);
+
+        return back()->with('status',
+            "Đã gán giáo trình cho {$student->full_name} — {$curriculum->modules()->count()} chương. "
+            .'Học sinh có thể bắt đầu học ngay.');
     }
 
     /** Tao lai khi that bai (hoac muon sinh lai). */

@@ -12,6 +12,9 @@
 
 @section('page-actions')
     <a href="{{ route('admin.syllabi') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-left"></i> Thư viện</a>
+    @if ($s->isReady())
+        <button type="button" onclick="window.print()" class="btn btn-sm btn-outline-primary"><i class="bi bi-printer"></i> In / Xuất PDF</button>
+    @endif
     @if ($s->status === 'failed' || $s->isReady())
         <form method="POST" action="{{ route('admin.syllabi.retry', $s) }}" class="d-inline">
             @csrf
@@ -28,6 +31,12 @@
 @section('content')
 @if (session('status'))
     <div class="alert alert-success py-2 small">{{ session('status') }}</div>
+@endif
+@if (session('error'))
+    <div class="alert alert-danger py-2 small">{{ session('error') }}</div>
+@endif
+@if ($errors->any())
+    <div class="alert alert-danger py-2 small">@foreach ($errors->all() as $e)<div>{{ $e }}</div>@endforeach</div>
 @endif
 
 <div class="text-secondary small mb-3">
@@ -65,12 +74,42 @@
         $modules = $s->content['modules'] ?? [];
     @endphp
 
+    {{-- Tieu de chi hien khi IN (d-none tren man hinh) --}}
+    <div class="print-title d-none">{{ $s->title }}</div>
+    <div class="print-meta d-none">Lớp {{ $s->grade }}@if ($s->topic) · {{ $s->topic }}@endif · {{ count($modules) }} chương · {{ $s->lessonCount() }} bài</div>
+
     <x-card class="mb-4">
         <div class="row g-3 text-center">
             <div class="col-4"><x-stat label="Chương" :value="count($modules)" icon="bi-collection" /></div>
             <div class="col-4"><x-stat label="Bài học" :value="$s->lessonCount()" icon="bi-journal-text" /></div>
             <div class="col-4"><x-stat label="Số buổi" :value="$s->planned_sessions" icon="bi-calendar-week" /></div>
         </div>
+    </x-card>
+
+    {{-- Gan cho hoc sinh --}}
+    <x-card title="Gán cho học sinh" icon="bi-person-check" class="mb-4">
+        @if ($students->isEmpty())
+            <p class="text-secondary small mb-0">Chưa có học sinh nào trong hệ thống để gán.</p>
+        @else
+            <form method="POST" action="{{ route('admin.syllabi.assign', $s) }}"
+                  class="row g-2 align-items-end"
+                  onsubmit="return confirm('Gán giáo trình này cho học sinh? Lộ trình đang học (nếu có) sẽ được lưu trữ và thay bằng giáo trình này.')">
+                @csrf
+                <div class="col-md-8">
+                    <label class="form-label small fw-semibold">Chọn học sinh</label>
+                    <select name="student_id" class="form-select" required>
+                        <option value="">— chọn học sinh —</option>
+                        @foreach ($students as $stu)
+                            <option value="{{ $stu->id }}">{{ $stu->full_name }} (lớp {{ $stu->grade }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary w-100"><i class="bi bi-person-check"></i> Gán & cho học</button>
+                </div>
+            </form>
+            <div class="form-text">Học sinh cùng khối lớp ({{ $s->grade }}) được xếp lên đầu. Lộ trình sẽ mở bài đầu tiên để em bắt đầu học.</div>
+        @endif
     </x-card>
 
     <div class="accordion" id="syllabusAcc">

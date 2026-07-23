@@ -29,6 +29,9 @@
          ?v=filemtime: cache-bust — browser lay CSS moi ngay khi file doi (tranh giao dien trang do cache CSS cu). --}}
     <link href="{{ asset('css/theme.css') }}?v={{ filemtime(public_path('css/theme.css')) }}" rel="stylesheet">
 
+    {{-- Print stylesheet — CHI ap dung khi in (media=print), khong anh huong man hinh --}}
+    <link href="{{ asset('css/print.css') }}?v={{ filemtime(public_path('css/print.css')) }}" rel="stylesheet" media="print">
+
     {{-- 4. Mau ca nhan hoa — SAU theme.css. Gia tri da qua ThemeColor::resolve()
          nen chac chan thuoc bang 10 mau, khong phai hex tu do. --}}
     <style>:root{ --ht-primary: {{ $theme['hex'] }}; --ht-primary-rgb: {{ $theme['rgb'] }}; }</style>

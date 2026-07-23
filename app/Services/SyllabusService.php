@@ -105,6 +105,7 @@ class SyllabusService
           và đúng 3 bài tập "exercises" mức easy/medium/hard, mỗi bài có "content" và "answer".
         - Công thức toán viết bằng LaTeX đặt trong \$...\$ (vd \$x^2+1\$).
         - Nội dung tiếng Việt, bám sát chương trình phổ thông.
+        - TỰ GIẢI lại mỗi bài tập để chắc chắn "answer" khớp đúng với đề.
         - "planned_sessions": tổng số buổi hợp lý.
 
         Trả về JSON đúng schema.

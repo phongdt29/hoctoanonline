@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Http;
  * Neu doi nha cung cap sau nay -> viet adapter khac cung interface (chat/text),
  * AiProviderService khong can biet provider la Gemini hay gi.
  */
-class GeminiClient
+class GeminiClient implements AiClient
 {
     /**
      * @param  array|null  $schema  JSON Schema — neu co, ep Gemini tra JSON dung cau truc.

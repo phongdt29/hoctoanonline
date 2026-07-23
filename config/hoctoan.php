@@ -94,6 +94,9 @@ return [
     */
     'ai_timeout' => 60,
 
+    // Gioi han token dau ra (Claude yeu cau max_tokens; Gemini khong dung khoa nay).
+    'ai_max_tokens' => (int) env('AI_MAX_TOKENS', 8192),
+
     /*
     | Giá token AI — ước tính chi phí (report admin).
     | Đơn giá USD trên 1 TRIỆU token (mặc định theo Gemini Flash; chỉnh theo model

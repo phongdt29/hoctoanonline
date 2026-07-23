@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Models\AiLog;
 use App\Models\AiProvider;
+use App\Services\Ai\AiClient;
 use App\Services\Ai\AiException;
 use App\Services\Ai\AiResult;
+use App\Services\Ai\ClaudeClient;
 use App\Services\Ai\GeminiClient;
 use App\Services\Ai\JsonSchemaValidator;
 use Illuminate\Support\Facades\Log;
@@ -25,9 +27,21 @@ use Throwable;
 class AiProviderService
 {
     public function __construct(
-        private readonly GeminiClient $client,
+        private readonly GeminiClient $gemini,
+        private readonly ClaudeClient $claude,
         private readonly JsonSchemaValidator $validator,
     ) {}
+
+    /**
+     * Chon adapter theo base_url: chua "anthropic" -> Claude, con lai -> Gemini.
+     * Provider Gemini san co khong doi hanh vi (base_url = generativelanguage...).
+     */
+    private function clientFor(AiProvider $provider): AiClient
+    {
+        return str_contains(strtolower($provider->base_url), 'anthropic')
+            ? $this->claude
+            : $this->gemini;
+    }
 
     /**
      * Goi AI tra JSON theo schema. Tra mang da validate.
@@ -124,7 +138,7 @@ class AiProviderService
             // Loi HTTP (timeout, 5xx, 4xx) van la 1 call da xay ra -> phai co ai_logs
             // (CLAUDE.md #3). Log status=error roi nem lai de run() failover provider ke.
             try {
-                $response = $this->client->generate($provider, $prompt, $schema, null, $image);
+                $response = $this->clientFor($provider)->generate($provider, $prompt, $schema, null, $image);
             } catch (Throwable $e) {
                 $latencyMs = (int) ((hrtime(true) - $startedAt) / 1e6);
                 $this->writeLog($feature, $provider->id, $studentId, $prompt, ['error' => $e->getMessage()], $latencyMs, AiLog::STATUS_ERROR);
