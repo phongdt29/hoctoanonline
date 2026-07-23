@@ -117,8 +117,12 @@
 <section id="tinh-nang" class="py-5">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="h3 fw-bold">Mọi thứ một học sinh cần để tiến bộ thật</h2>
-            <p class="text-secondary">Không phải web bài tập thông thường — đây là gia sư A.I hiểu bạn.</p>
+            <span class="badge rounded-pill px-3 py-2 mb-3 fw-semibold"
+                  style="background:color-mix(in srgb, var(--ht-primary) 12%, #fff); color:var(--ht-primary)">
+                <i class="bi bi-lightbulb"></i> Tính năng nổi bật
+            </span>
+            <h2 class="display-6 fw-bold mb-2">Mọi thứ một học sinh cần để <span class="ht-text-grad">tiến bộ thật</span></h2>
+            <p class="text-secondary fs-5 mb-0">Không phải web bài tập thông thường — đây là gia sư A.I hiểu bạn.</p>
         </div>
         <div class="row g-4">
             @foreach ([
@@ -144,11 +148,18 @@
 </section>
 
 {{-- Danh sach tinh nang day du — chia theo doi tuong --}}
-<section id="cho-ai" class="py-5" style="background:var(--ht-bg)">
-    <div class="container">
+<section id="cho-ai" class="py-5 position-relative overflow-hidden"
+         style="background:linear-gradient(180deg, color-mix(in srgb, var(--ht-primary) 7%, #fff) 0%, var(--ht-bg) 55%)">
+    <div class="hero-glow" style="top:-150px; right:-90px"></div>
+    <div class="hero-glow" style="bottom:-190px; left:-120px; opacity:.10"></div>
+    <div class="container position-relative">
         <div class="text-center mb-5">
-            <h2 class="h3 fw-bold">Đầy đủ tính năng cho cả nhà và nhà trường</h2>
-            <p class="text-secondary">Một nền tảng — học sinh học, phụ huynh theo dõi, giáo viên soạn giảng.</p>
+            <span class="badge rounded-pill px-3 py-2 mb-3 fw-semibold"
+                  style="background:color-mix(in srgb, var(--ht-primary) 12%, #fff); color:var(--ht-primary)">
+                <i class="bi bi-stars"></i> Tất cả trong một nền tảng
+            </span>
+            <h2 class="display-6 fw-bold mb-2">Đầy đủ tính năng cho <span class="ht-text-grad">cả nhà và nhà trường</span></h2>
+            <p class="text-secondary fs-5 mb-0">Một nền tảng — học sinh học, phụ huynh theo dõi, giáo viên soạn giảng.</p>
         </div>
         <div class="row g-4">
             @foreach ([
@@ -179,17 +190,19 @@
                 ]],
             ] as [$icon, $group, $items])
                 <div class="col-md-6 col-lg-4">
-                    <div class="card ht-hover h-100">
+                    <div class="card h-100 border-0 ht-hover"
+                         style="border-radius:var(--ht-radius); box-shadow:var(--ht-shadow-lg); overflow:hidden">
+                        <div style="height:5px; background:var(--ht-gradient)"></div>
                         <div class="card-body p-4">
                             <div class="d-flex align-items-center gap-3 mb-3">
-                                <div class="ht-ico"><i class="bi {{ $icon }}"></i></div>
+                                <div class="ht-ico ht-ico-grad" style="width:52px; height:52px; font-size:1.4rem"><i class="bi {{ $icon }}"></i></div>
                                 <h3 class="h5 fw-bold mb-0">{{ $group }}</h3>
                             </div>
                             <ul class="list-unstyled mb-0 d-grid gap-2">
                                 @foreach ($items as $item)
-                                    <li class="d-flex gap-2 small">
-                                        <i class="bi bi-check-circle-fill" style="color:var(--ht-primary)"></i>
-                                        <span class="text-secondary">{{ $item }}</span>
+                                    <li class="d-flex gap-2 small align-items-start">
+                                        <i class="bi bi-check-circle-fill flex-shrink-0" style="color:var(--ht-primary); margin-top:2px"></i>
+                                        <span>{{ $item }}</span>
                                     </li>
                                 @endforeach
                             </ul>
@@ -205,7 +218,12 @@
 <section id="cach-hoat-dong" class="py-5">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="h3 fw-bold">Chỉ 4 bước để bắt đầu</h2>
+            <span class="badge rounded-pill px-3 py-2 mb-3 fw-semibold"
+                  style="background:color-mix(in srgb, var(--ht-primary) 12%, #fff); color:var(--ht-primary)">
+                <i class="bi bi-rocket-takeoff"></i> Bắt đầu dễ dàng
+            </span>
+            <h2 class="display-6 fw-bold mb-2">Chỉ <span class="ht-text-grad">4 bước</span> để bắt đầu</h2>
+            <p class="text-secondary fs-5 mb-0">Từ đăng ký đến buổi học đầu tiên — mọi thứ tự động.</p>
         </div>
         <div class="row g-4 justify-content-center">
             @foreach ([
@@ -233,7 +251,7 @@
     <div class="container">
         <div class="card border-0 text-center overflow-hidden" style="background:var(--ht-gradient); color:#fff; box-shadow:var(--ht-shadow-lg)">
             <div class="card-body p-5">
-                <h2 class="h3 fw-bold mb-2">Sẵn sàng học toán theo cách của riêng bạn?</h2>
+                <h2 class="display-6 fw-bold mb-2">Sẵn sàng học toán theo cách của riêng bạn?</h2>
                 <p class="mb-4 opacity-75">Miễn phí bắt đầu. Không cần thẻ. Có ngay lộ trình sau bài test đầu vào.</p>
                 <a href="{{ route('register') }}" class="btn btn-light btn-lg ht-tap fw-bold px-4" style="color:var(--ht-primary)">
                     Đăng ký miễn phí ngay <i class="bi bi-arrow-right ms-1"></i>
