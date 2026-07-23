@@ -5,7 +5,7 @@
     'action' => null,
 ])
 
-<div {{ $attributes->merge(['class' => 'card h-100']) }}>
+<div {{ $attributes->merge(['class' => 'card']) }}>
     @if ($title)
         <div class="card-body pb-0 d-flex justify-content-between align-items-center gap-2">
             <h2 class="h6 fw-bold mb-0 d-flex align-items-center gap-2">

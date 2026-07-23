@@ -225,7 +225,7 @@ body {
 .ht-rise-2 { animation-delay: .06s; } .ht-rise-3 { animation-delay: .12s; }
 
 /* Vung cham >= 44px */
-.ht-tap { min-width: 44px; min-height: 44px; }
+.ht-tap { min-width: 44px; }
 
 @media (max-width: 991.98px) {
     body.has-bottom-nav { padding-bottom: 80px; }

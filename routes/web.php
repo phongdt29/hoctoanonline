@@ -127,6 +127,8 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
 Route::middleware(['auth', 'role:admin,staff'])->group(function () {
     Route::get('/admin', [\App\Http\Controllers\Admin\ReportController::class, 'index'])
         ->name('admin.home');
+    Route::get('/admin/token-cost', [\App\Http\Controllers\Admin\TokenCostController::class, 'index'])
+        ->name('admin.token-cost');
 });
 
 // Admin thuc — quan ly AI provider (key nhay cam, khong cho staff).

@@ -10,6 +10,7 @@
         <a href="{{ route('admin.lessons') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-journal-text"></i> Soạn bài</a>
         <a href="{{ route('admin.providers') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-hdd-network"></i> Nhà cung cấp AI</a>
     @endif
+    <a href="{{ route('admin.token-cost') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-calculator"></i> Ước tính chi phí</a>
     <button onclick="window.print()" class="btn btn-sm btn-outline-primary"><i class="bi bi-printer"></i> In</button>
 @endsection
 

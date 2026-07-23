@@ -17,7 +17,7 @@
 
                         <p style="margin:0 0 24px">
                             <a href="{{ $resetUrl }}"
-                               style="display:inline-block;background:#5B4DFF;color:#fff;text-decoration:none;padding:12px 24px;border-radius:12px;font-weight:600;font-size:14px">
+                               style="display:inline-block;background:#2563EB;color:#fff;text-decoration:none;padding:12px 24px;border-radius:12px;font-weight:600;font-size:14px">
                                 Đặt lại mật khẩu
                             </a>
                         </p>

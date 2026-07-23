@@ -6,7 +6,9 @@
     Doi thu tu -> theme khong ghi de duoc Bootstrap.
 --}}
 @php
-    $theme = \App\Support\ThemeColor::resolve($themeColor ?? null);
+    // Ep mau xanh dong nhat TOAN APP (bo ca nhan hoa mau theo tung account).
+    // Muon bat lai mau ca nhan: doi thanh  ThemeColor::resolve($themeColor ?? null).
+    $theme = \App\Support\ThemeColor::resolve(config('hoctoan.personalization.default_color'));
 @endphp
 <!DOCTYPE html>
 <html lang="vi">

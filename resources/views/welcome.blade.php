@@ -44,10 +44,10 @@
             </ul>
             <div class="d-flex flex-column flex-lg-row gap-2 ms-lg-3 mt-3 mt-lg-0">
                 @auth
-                    <a href="{{ route('home') }}" class="btn btn-primary ht-tap">Vào học</a>
+                    <a href="{{ route('home') }}" class="btn btn-primary">Vào học</a>
                 @else
-                    <a href="{{ route('login') }}" class="btn btn-outline-primary ht-tap">Đăng nhập</a>
-                    <a href="{{ route('register') }}" class="btn btn-primary ht-tap">Đăng ký miễn phí</a>
+                    <a href="{{ route('login') }}" class="btn btn-outline-primary">Đăng nhập</a>
+                    <a href="{{ route('register') }}" class="btn btn-primary">Đăng ký miễn phí</a>
                 @endauth
             </div>
         </div>

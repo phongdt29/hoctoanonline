@@ -4,7 +4,8 @@ it('trang home hien thi landing page gioi thieu dich vu', function () {
         ->assertOk()
         ->assertSee('lộ trình riêng', false)
         ->assertSee('Đăng ký miễn phí')
-        ->assertSee('Chỉ 4 bước để bắt đầu')
+        // Tieu de co <span> gradient chen giua nen dung assertSeeText (bo tag roi so).
+        ->assertSeeText('Chỉ 4 bước để bắt đầu')
         ->assertSee('Giải bài từ ảnh');
 });
 
