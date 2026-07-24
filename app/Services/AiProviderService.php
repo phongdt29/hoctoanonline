@@ -8,6 +8,7 @@ use App\Services\Ai\AiClient;
 use App\Services\Ai\AiException;
 use App\Services\Ai\AiResult;
 use App\Services\Ai\ClaudeClient;
+use App\Services\Ai\DailyLimitException;
 use App\Services\Ai\GeminiClient;
 use App\Services\Ai\JsonSchemaValidator;
 use Illuminate\Support\Facades\Log;
@@ -26,11 +27,42 @@ use Throwable;
  */
 class AiProviderService
 {
+    /** Tinh nang NGUOI DUNG chu dong goi -> bi gioi han so lan/ngay (chong lam dung). */
+    private const USER_LIMITED_FEATURES = [AiLog::FEATURE_SOLVER, AiLog::FEATURE_TUTOR_CHAT];
+
     public function __construct(
         private readonly GeminiClient $gemini,
         private readonly ClaudeClient $claude,
         private readonly JsonSchemaValidator $validator,
     ) {}
+
+    /**
+     * Chan khi hoc sinh vuot han muc goi AI trong ngay (chi tinh solver + tutor).
+     * KHONG ap cho chuoi he thong (cham test / sinh giao trinh) hay call admin (studentId null).
+     */
+    private function assertDailyLimit(string $feature, ?int $studentId): void
+    {
+        if ($studentId === null || ! in_array($feature, self::USER_LIMITED_FEATURES, true)) {
+            return;
+        }
+
+        $limit = (int) config('hoctoan.ai_calls_per_day', 10);
+        if ($limit <= 0) {
+            return;   // 0 = tat gioi han
+        }
+
+        $used = AiLog::where('student_id', $studentId)
+            ->whereIn('feature', self::USER_LIMITED_FEATURES)
+            ->where('status', AiLog::STATUS_OK)
+            ->whereDate('created_at', today())
+            ->count();
+
+        if ($used >= $limit) {
+            throw new DailyLimitException(
+                "Bạn đã dùng hết {$limit} lượt hỏi A.I hôm nay. Hãy quay lại vào ngày mai nhé."
+            );
+        }
+    }
 
     /**
      * Chon adapter theo base_url: chua "anthropic" -> Claude, con lai -> Gemini.
@@ -92,6 +124,8 @@ class AiProviderService
      */
     private function run(string $feature, string $prompt, ?array $schema, ?int $studentId, ?array $image = null): AiResult
     {
+        $this->assertDailyLimit($feature, $studentId);
+
         $providers = AiProvider::usable()->get();
 
         if ($providers->isEmpty()) {

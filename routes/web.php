@@ -95,6 +95,7 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::middleware('assessed')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
         Route::get('/curriculum', [CurriculumPageController::class, 'show'])->name('curriculum');
+        Route::get('/results', [\App\Http\Controllers\Student\ResultController::class, 'show'])->name('results');
         Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
         Route::get('/quiz/{quiz}', [\App\Http\Controllers\Student\QuizPageController::class, 'show'])->name('quiz.show');
 

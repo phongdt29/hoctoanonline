@@ -11,6 +11,7 @@
     $nav = [
         ['route' => 'dashboard',  'icon' => 'bi-house-door',   'label' => 'Trang chính'],
         ['route' => 'curriculum', 'icon' => 'bi-map',          'label' => 'Lộ trình'],
+        ['route' => 'results',    'icon' => 'bi-graph-up-arrow', 'label' => 'Kết quả'],
         ['route' => 'solver',     'icon' => 'bi-calculator',   'label' => 'Giải bài'],
         ['route' => 'tutor',      'icon' => 'bi-chat-dots',    'label' => 'Gia sư'],
         ['route' => 'pricing',    'icon' => 'bi-gem',          'label' => 'Mua gói'],

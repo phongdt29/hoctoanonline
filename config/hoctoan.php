@@ -110,6 +110,13 @@ return [
     ],
 
     /*
+    | Gioi han so lan goi AI NGUOI DUNG chu dong (giai bai + gia su) moi hoc sinh / ngay.
+    | Chong lam dung + kiem soat chi phi. 0 = tat gioi han.
+    | KHONG ap cho chuoi he thong (cham test, sinh giao trinh, soan de admin).
+    */
+    'ai_calls_per_day' => (int) env('AI_CALLS_PER_DAY', 10),
+
+    /*
     | Safety filter co ban cho noi dung AI (hoc sinh 6-12) — SPEC §3.8.
     | Lop chan THO; provider that thuong co safety rieng manh hon.
     | De rong o dev; production bo sung tu ngu nhay cam qua bien moi truong/DB.
