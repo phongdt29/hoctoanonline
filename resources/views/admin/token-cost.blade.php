@@ -122,6 +122,54 @@
         @endif
     </div>
 </div>
+
+{{-- Token THAT theo tung nguoi dung --}}
+<x-card title="Token theo người dùng (dữ liệu thật)" icon="bi-person-lines-fill" class="mt-4">
+    @if ($byUser->isEmpty())
+        <p class="text-secondary small mb-0">Chưa có lượt gọi AI nào được ghi log.</p>
+    @else
+        @php
+            $totCalls = $byUser->sum('calls');
+            $totTokens = $byUser->sum('tokens');
+            $totVnd = $byUser->sum('vnd');
+        @endphp
+        <div class="row g-3 text-center mb-3">
+            <div class="col-4"><x-stat label="Người dùng" :value="$byUser->count()" icon="bi-people" /></div>
+            <div class="col-4"><x-stat label="Tổng lượt gọi" :value="number_format($totCalls)" icon="bi-lightning" /></div>
+            <div class="col-4"><x-stat label="Tổng chi phí" :value="number_format($totVnd) . ' ₫'" icon="bi-cash-coin" /></div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+                <thead><tr class="small text-secondary">
+                    <th>Người dùng</th>
+                    <th class="text-end">Lượt gọi</th>
+                    <th class="text-end">Tổng token</th>
+                    <th class="text-end">Chi phí (₫)</th>
+                </tr></thead>
+                <tbody class="num">
+                    @foreach ($byUser as $u)
+                        <tr>
+                            <td class="text-body">{{ $u['name'] }}</td>
+                            <td class="text-end">{{ number_format($u['calls']) }}</td>
+                            <td class="text-end">{{ number_format($u['tokens']) }}</td>
+                            <td class="text-end">{{ number_format($u['vnd']) }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr class="fw-semibold num border-top">
+                        <td>Tổng cộng</td>
+                        <td class="text-end">{{ number_format($totCalls) }}</td>
+                        <td class="text-end">{{ number_format($totTokens) }}</td>
+                        <td class="text-end">{{ number_format($totVnd) }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="form-text">Chi phí tính theo đơn giá mặc định trong cấu hình. Log không gắn học sinh = do admin sinh đề/giáo trình.</div>
+    @endif
+</x-card>
 @endsection
 
 @push('scripts')

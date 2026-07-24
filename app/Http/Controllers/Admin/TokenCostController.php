@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AiLog;
+use App\Models\Student;
 use Illuminate\View\View;
 
 /**
@@ -49,6 +50,39 @@ class TokenCostController extends Controller
             'hasData'   => $hasData,
             'sampleCalls' => (int) ($overall->c ?? 0),
             'byFeature' => $byFeature,
+            'byUser'    => $this->byUser($pricing),
         ]);
+    }
+
+    /**
+     * Token & chi phi THAT theo tung nguoi dung (gom theo student_id).
+     * Log khong gan student (student_id NULL) = do admin sinh (soan de/giao trinh) -> gom "Hệ thống".
+     *
+     * @param  array<string,mixed>  $pricing
+     * @return \Illuminate\Support\Collection<int,array<string,mixed>>
+     */
+    private function byUser(array $pricing): \Illuminate\Support\Collection
+    {
+        $rows = AiLog::where('total_tokens', '>', 0)
+            ->selectRaw('student_id, COUNT(*) calls, SUM(prompt_tokens) itok, SUM(GREATEST(completion_tokens, total_tokens - prompt_tokens)) otok')
+            ->groupBy('student_id')
+            ->get();
+
+        // Ten hoc sinh (1 query).
+        $names = Student::whereIn('id', $rows->pluck('student_id')->filter())
+            ->pluck('full_name', 'id');
+
+        return $rows->map(function ($r) use ($pricing, $names) {
+            $usd = $r->itok / 1e6 * $pricing['input_usd_per_1m']
+                 + $r->otok / 1e6 * $pricing['output_usd_per_1m'];
+
+            return [
+                'name'   => $r->student_id ? ($names[$r->student_id] ?? "HS #{$r->student_id}") : 'Hệ thống (admin)',
+                'calls'  => (int) $r->calls,
+                'tokens' => (int) ($r->itok + $r->otok),
+                'usd'    => $usd,
+                'vnd'    => (int) round($usd * $pricing['usd_to_vnd']),
+            ];
+        })->sortByDesc('tokens')->values();
     }
 }
